@@ -240,7 +240,7 @@ namespace DrRobot.JaguarControl
 
                 // Sleep to approximate 20 Hz update rate
                 Thread.Sleep(deltaT); //not sure if this works anymore..... -wf
-                Thread.Sleep(500);
+                // Thread.Sleep(500);
 
             }
         }
