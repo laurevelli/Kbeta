@@ -51,9 +51,9 @@ namespace DrRobot.JaguarControl
         private double angleTravelled, distanceTravelled;
         private double diffEncoderPulseL, diffEncoderPulseR;
         private double maxVelocity = 0.25;
-        private double Krho = 1.5;//1;              // Krho > 0 (Conditions for stability)
-        private double Kalpha = 8;//2;              // Kalpha - Kpho > 0
-        private double Kbeta = -0.8;//-0.5//-1.0;   // Kbeta < 0
+        private double Krho = 0.1;//1;              // Krho > 0 (Conditions for stability)
+        private double Kalpha = 0.533;//2;              // Kalpha - Kpho > 0
+        private double Kbeta = -0.0533;//-0.5//-1.0;   // Kbeta < 0
         const double alphaTrackingAccuracy = 0.10;
         const double betaTrackingAccuracy = 0.1;
         const double rhoTrackingAccuracy = 0.10;
@@ -75,6 +75,8 @@ namespace DrRobot.JaguarControl
 
         const double maxTickSpeed = 802;
         // max speed 2.36 [m/s]*(1/(wheelRadius[m]*2*pi))*190[ticks/rev]
+        const short slowMaxTickSpeed = 30;
+        // max speed 0.25 [m/s] = 85; same calculation as above
 
         #endregion
 
@@ -222,8 +224,10 @@ namespace DrRobot.JaguarControl
                     else 
                     {
                         // Determine the desired PWM signals for desired wheel speeds
-                        CalcMotorSignals();
-                        ActuateMotorsWithPWMControl();
+                        //CalcMotorSignals();
+                        CalcSimulatedMotorSignals();
+                        ActuateMotorsWithVelControl();
+                        //ActuateMotorsWithPWMControl();
                     }
 
                 }
@@ -403,10 +407,10 @@ namespace DrRobot.JaguarControl
         public void ActuateMotorsWithPWMControl()
         { 
             if (jaguarControl.Simulating())
-                simulatedJaguar.DcMotorPwmNonTimeCtrAll(0, 0, 0, motorSignalL, motorSignalR, 0);
+                simulatedJaguar.DcMotorPwmNonTimeCtrAll(0, 0, 0, motorSignalL, (short) (-motorSignalR), 0);
             else
             {
-                jaguarControl.realJaguar.DcMotorPwmNonTimeCtrAll(0, 0, 0, motorSignalL, motorSignalR, 0);
+                jaguarControl.realJaguar.DcMotorPwmNonTimeCtrAll(0, 0, 0, motorSignalL, (short) (-motorSignalR), 0);
             }
         }
 
@@ -419,8 +423,8 @@ namespace DrRobot.JaguarControl
             else
             {
                 // Setup Control
-                jaguarControl.realJaguar.SetDcMotorVelocityControlPID(3, K_P, K_D, K_I);
-                jaguarControl.realJaguar.SetDcMotorVelocityControlPID(4, K_P, K_D, K_I);
+                // jaguarControl.realJaguar.SetDcMotorVelocityControlPID(3, K_P, K_D, K_I);
+                // jaguarControl.realJaguar.SetDcMotorVelocityControlPID(4, K_P, K_D, K_I);
 
                 jaguarControl.realJaguar.DcMotorVelocityNonTimeCtrAll(0, 0, 0, motorSignalL, (short)(-motorSignalR), 0);
             }
@@ -460,7 +464,7 @@ namespace DrRobot.JaguarControl
             {
                 TimeSpan ts = DateTime.Now - startTime;
                 time = ts.TotalSeconds;
-                 String newData = time.ToString() + " " + x.ToString() + " " + y.ToString() + " " + t.ToString() +" " + rho.ToString() ;
+                 String newData = time.ToString() + " " + x.ToString() + " " + y.ToString() + " " + t.ToString() +" " + rho.ToString() + " " + desiredRotRateL.ToString() + " " + desiredRotRateR.ToString() + " " + alpha.ToString() + " " + beta.ToString();
 
                 logFile.WriteLine(newData);
             }
@@ -522,6 +526,16 @@ namespace DrRobot.JaguarControl
             beta = -t - alpha;
             desiredW = Kalpha * alpha + Kbeta * beta;
 
+            if (alpha > Math.PI)
+            { alpha -= (2 * Math.PI); }
+            if (alpha < -Math.PI)
+            { alpha += (2 * Math.PI); }
+
+            if (beta > Math.PI)
+            { beta -= (2 * Math.PI); }
+            if (beta < -Math.PI)
+            { beta += (2 * Math.PI); }
+
             angVelR = (desiredV / (2 * robotRadius)) + (desiredW / 2);
             angVelL = -(desiredV / (2 * robotRadius)) + (desiredW / 2);
             desiredRotRateR = (short)(   ((angVelR * 2 * robotRadius / wheelRadius) / (2 * Math.PI)) * 190);
@@ -533,6 +547,14 @@ namespace DrRobot.JaguarControl
                 desiredRotRateR = 0;
                 desiredRotRateL = 0;
             }
+            if (desiredRotRateL > slowMaxTickSpeed)
+                desiredRotRateL = slowMaxTickSpeed;
+            if (desiredRotRateR > slowMaxTickSpeed)
+                desiredRotRateR = slowMaxTickSpeed;
+            if (desiredRotRateL < -slowMaxTickSpeed)
+                desiredRotRateL = -slowMaxTickSpeed;
+            if (desiredRotRateR < -slowMaxTickSpeed)
+                desiredRotRateR = -slowMaxTickSpeed;
         }
 
 
