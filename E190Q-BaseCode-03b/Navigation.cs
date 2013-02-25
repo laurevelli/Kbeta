@@ -525,7 +525,12 @@ namespace DrRobot.JaguarControl
             
             beta = -t - alpha;
             desiredW = Kalpha * alpha + Kbeta * beta;
-
+            
+            // Remove multiple loops around the unit circle:
+            alpha %= (2*Math.PI);
+            beta %= (2*Math.PI);
+            
+            // fit alpha and beta to a range of -PI to PI:
             if (alpha > Math.PI)
             { alpha -= (2 * Math.PI); }
             if (alpha < -Math.PI)
