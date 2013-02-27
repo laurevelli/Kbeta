@@ -1120,6 +1120,7 @@ namespace DrRobot.JaguarControl
             trackBarTurnPower.Value = 0;
             turnVel = 0;
             forwardVel = 0;
+            simulatedJaguar.Reset();
 
             if (Simulating())
                 simulatedJaguar.DcMotorVelocityNonTimeCtrAll(0, 0, 0, 0, 0, 0);

@@ -51,9 +51,9 @@ namespace DrRobot.JaguarControl
         private double angleTravelled, distanceTravelled;
         private double diffEncoderPulseL, diffEncoderPulseR;
         private double maxVelocity = 0.25;
-        private double Krho = 0.1;//1;              // Krho > 0 (Conditions for stability)
-        private double Kalpha = 0.533;//2;              // Kalpha - Kpho > 0
-        private double Kbeta = -0.0533;//-0.5//-1.0;   // Kbeta < 0
+        private double Krho = 1.0;//.1;//0.005;//1;                // Krho > 0 (Conditions for stability)
+        private double Kalpha = 2;//0.0533;//2;             // Kalpha - Krho > 0
+        private double Kbeta = -0.5;//-0.00333;//-0.5//-1.0;   // Kbeta < 0
         const double alphaTrackingAccuracy = 0.10;
         const double betaTrackingAccuracy = 0.1;
         const double rhoTrackingAccuracy = 0.10;
@@ -75,7 +75,7 @@ namespace DrRobot.JaguarControl
 
         const double maxTickSpeed = 802;
         // max speed 2.36 [m/s]*(1/(wheelRadius[m]*2*pi))*190[ticks/rev]
-        const short slowMaxTickSpeed = 30;
+        const short slowMaxTickSpeed = 10;
         // max speed 0.25 [m/s] = 85; same calculation as above
 
         #endregion
@@ -360,7 +360,7 @@ namespace DrRobot.JaguarControl
         public void CalcSimulatedMotorSignals()
         {
 
-            motorSignalL = (short)(desiredRotRateL);
+            motorSignalL = (short)(-desiredRotRateL);// was negative by JL
             motorSignalR = (short)(desiredRotRateR);
 
         }
@@ -394,7 +394,7 @@ namespace DrRobot.JaguarControl
             motorSignalL = (short)(zeroOutput + desiredRotRateL * 300);// (zeroOutput + u_L);
             motorSignalR = (short)(zeroOutput - desiredRotRateR * 100);//(zeroOutput - u_R);
 
-            motorSignalL = (short)Math.Min(maxPosOutput, Math.Max(0, (int)motorSignalL));
+            motorSignalL = (short)Math.Min(maxPosOutput, Math.Max(0, (int)motorSignalL));   // FLIP SIGN
             motorSignalR = (short)Math.Min(maxPosOutput, Math.Max(0, (int)motorSignalR));
 
             e_sum_R = Math.Max(-maxErr, Math.Min(0.90 * e_sum_R + e_R * deltaT, maxErr));
@@ -514,35 +514,32 @@ namespace DrRobot.JaguarControl
             rho = Math.Sqrt((Math.Pow(delta_x, 2) + Math.Pow(delta_y, 2)));
             alpha = -t + Math.Atan2(delta_y, delta_x);
             desiredV = Krho * rho;
-            
+
+            // constrain calculated alpha:
+            alpha = normalizeAngle(alpha);
+
             // If we need to turn more than 180 degrees, turn backwards!
             if (Math.Abs(alpha) > (Math.PI / 2))
             {
                 // recalculate alpha and desiredV to drive backwards:
                 alpha = -t + Math.Atan2(-delta_y, -delta_x);
+                // constrain calculated alpha:
+                alpha = normalizeAngle(alpha);
+
                 desiredV = -Krho * rho;
             }
-            
-            beta = -t - alpha;
-            desiredW = Kalpha * alpha + Kbeta * beta;
-            
-            // Remove multiple loops around the unit circle:
-            alpha %= (2*Math.PI);
-            beta %= (2*Math.PI);
-            
-            // fit alpha and beta to a range of -PI to PI:
-            if (alpha > Math.PI)
-            { alpha -= (2 * Math.PI); }
-            if (alpha < -Math.PI)
-            { alpha += (2 * Math.PI); }
 
-            if (beta > Math.PI)
-            { beta -= (2 * Math.PI); }
-            if (beta < -Math.PI)
-            { beta += (2 * Math.PI); }
+            // state estimation eqn 1:
+            beta = -t - alpha;
+
+            // constraint calculated beta:
+            beta = normalizeAngle(beta);
+
+            // state estimation eqn 2:
+            desiredW = (Kalpha * alpha) + (Kbeta * beta);
 
             angVelR = (desiredV / (2 * robotRadius)) + (desiredW / 2);
-            angVelL = -(desiredV / (2 * robotRadius)) + (desiredW / 2);
+            angVelL = (-desiredV / (2 * robotRadius)) + (desiredW / 2);
             desiredRotRateR = (short)(   ((angVelR * 2 * robotRadius / wheelRadius) / (2 * Math.PI)) * 190);
             desiredRotRateL = (short)(   ((angVelL * 2 * robotRadius / wheelRadius) / (2 * Math.PI)) * 190);
 
@@ -552,14 +549,20 @@ namespace DrRobot.JaguarControl
                 desiredRotRateR = 0;
                 desiredRotRateL = 0;
             }
-            if (desiredRotRateL > slowMaxTickSpeed)
-                desiredRotRateL = slowMaxTickSpeed;
-            if (desiredRotRateR > slowMaxTickSpeed)
-                desiredRotRateR = slowMaxTickSpeed;
-            if (desiredRotRateL < -slowMaxTickSpeed)
-                desiredRotRateL = -slowMaxTickSpeed;
-            if (desiredRotRateR < -slowMaxTickSpeed)
-                desiredRotRateR = -slowMaxTickSpeed;
+
+            // constrain max values proportionally:
+
+            /*if ((Math.Abs(desiredRotRateL) > slowMaxTickSpeed) && (Math.Abs(desiredRotRateL) > Math.Abs(desiredRotRateR)))
+            {
+                desiredRotRateR = (short) (Math.Sign(desiredRotRateR)*Math.Abs(((double) desiredRotRateR / (double) desiredRotRateL)) * slowMaxTickSpeed);
+                desiredRotRateL = (short) (Math.Sign(desiredRotRateL) * slowMaxTickSpeed);
+            }
+            else if ((Math.Abs(desiredRotRateR) > slowMaxTickSpeed) && (Math.Abs(desiredRotRateR) >= Math.Abs(desiredRotRateL)))
+            {
+                desiredRotRateL = (short) (Math.Sign(desiredRotRateL)*Math.Abs(((double) desiredRotRateL / (double) desiredRotRateR)) * slowMaxTickSpeed);
+                desiredRotRateR = (short) (Math.Sign(desiredRotRateR) * slowMaxTickSpeed);
+            }*/
+
         }
 
 
@@ -638,13 +641,17 @@ namespace DrRobot.JaguarControl
             y += distanceTravelled * Math.Sin(t + (angleTravelled / 2));
 
             t += angleTravelled;    // add angular displacement.
-            t %= (2 * Math.PI);     // remove multiple circles around unit circle.
+            // t %= (2 * Math.PI);     // remove multiple circles around unit circle.
+            
             // fit to range of -PI to +PI:
+            t = normalizeAngle(t);
+            /*
             if (t > Math.PI)
             { t -= (2 * Math.PI); }
 
             if (t < -Math.PI)
             { t += (2 * Math.PI); }
+            */
 
         }
 
@@ -682,6 +689,39 @@ namespace DrRobot.JaguarControl
             // ****************** Additional Student Code: End   ************
 
         }
+
+
+        /**********************************************************************
+         * Additional Functions:
+         * *******************************************************************/
+        /*
+         * function: normalizeAngle(double angleInput)
+         * returns: a value constrained from -PI to PI
+         */
+        public double normalizeAngle(double angleInput)
+        {
+            double normalizedAngle = angleInput;
+
+            // handle negative overshoot:
+            if (normalizedAngle > Math.PI)
+            {
+                while (normalizedAngle > (Math.PI))
+                    normalizedAngle -= (2 * Math.PI);
+                return normalizedAngle;
+            }
+
+            // handle positive overshoot:
+            if (normalizedAngle < (-Math.PI))
+            {
+                while (normalizedAngle < (-Math.PI))
+                    normalizedAngle += (2 * Math.PI);
+                return normalizedAngle;
+            }
+
+            // handle no overshoot:
+            return normalizedAngle;
+        }
+
         #endregion
 
     }
