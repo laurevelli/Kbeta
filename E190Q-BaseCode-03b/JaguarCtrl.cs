@@ -1186,6 +1186,9 @@ namespace DrRobot.JaguarControl
                 navigation.desiredX = double.Parse(txtStartLat.Text);
                 navigation.desiredY = double.Parse(txtStartLong.Text);
                 navigation.desiredT = double.Parse(txtStartTheta.Text);
+                navigation.K_P = double.Parse(txtkP.Text);
+                navigation.K_I = double.Parse(txtkI.Text);
+                navigation.K_D = double.Parse(txtkD.Text);
             }
             catch
             {

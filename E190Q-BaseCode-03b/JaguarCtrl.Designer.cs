@@ -108,6 +108,12 @@
             this.label14 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
             this.desiredT = new System.Windows.Forms.Label();
+            this.kP = new System.Windows.Forms.Label();     // - added input
+            this.txtkP = new System.Windows.Forms.TextBox();    // - added input
+            this.kI = new System.Windows.Forms.Label();     // - added input
+            this.txtkI = new System.Windows.Forms.TextBox();    // - added input
+            this.kD = new System.Windows.Forms.Label();     // - added input
+            this.txtkD = new System.Windows.Forms.TextBox();    // - added input
             this.txtStartTheta = new System.Windows.Forms.TextBox();
             this.groupBoxGPSIMU.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.realJaguar)).BeginInit();
@@ -591,6 +597,36 @@
             this.label12.TabIndex = 26;
             this.label12.Text = "Des X:";
             this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            //
+            // - added input
+            this.kP.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.kP.ForeColor = System.Drawing.Color.Black;
+            this.kP.Location = new System.Drawing.Point(180, 517);
+            this.kP.Name = "kP";
+            this.kP.Size = new System.Drawing.Size(25, 18);
+            this.kP.TabIndex = 26;
+            this.kP.Text = "kP";
+            this.kP.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            //
+            // - added input
+            this.kI.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.kI.ForeColor = System.Drawing.Color.Black;
+            this.kI.Location = new System.Drawing.Point(180, 537);
+            this.kI.Name = "kI";
+            this.kI.Size = new System.Drawing.Size(25, 18);
+            this.kI.TabIndex = 26;
+            this.kI.Text = "kI";
+            this.kI.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            //
+            // - added input
+            this.kD.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.kD.ForeColor = System.Drawing.Color.Black;
+            this.kD.Location = new System.Drawing.Point(180, 557);
+            this.kD.Name = "kD";
+            this.kD.Size = new System.Drawing.Size(25, 18);
+            this.kD.TabIndex = 26;
+            this.kD.Text = "kD";
+            this.kD.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // btnSetStartPoint
             // 
@@ -1010,12 +1046,45 @@
             this.txtStartTheta.TabIndex = 70;
             this.txtStartTheta.Text = "0";
             // 
+            // txtkP    // - added input
+            // 
+            this.txtkP.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtkP.Location = new System.Drawing.Point(207, 517);
+            this.txtkP.Name = "txtkP";
+            this.txtkP.Size = new System.Drawing.Size(47, 20);
+            this.txtkP.TabIndex = 70;
+            this.txtkP.Text = "0";
+            // 
+            // txtkI    // - added input
+            // 
+            this.txtkI.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtkI.Location = new System.Drawing.Point(207, 537);
+            this.txtkI.Name = "txtkI";
+            this.txtkI.Size = new System.Drawing.Size(47, 20);
+            this.txtkI.TabIndex = 70;
+            this.txtkI.Text = "0";
+            // 
+            // txtkD    // - added input
+            // 
+            this.txtkD.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtkD.Location = new System.Drawing.Point(207, 557);
+            this.txtkD.Name = "txtkD";
+            this.txtkD.Size = new System.Drawing.Size(47, 20);
+            this.txtkD.TabIndex = 70;
+            this.txtkD.Text = "0";
+            // 
             // JaguarCtrl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ClientSize = new System.Drawing.Size(1016, 698);
+            this.Controls.Add(this.kP);     // - added input
+            this.Controls.Add(this.txtkP);  // - added input
+            this.Controls.Add(this.kI);     // - added input
+            this.Controls.Add(this.txtkI);  // - added input
+            this.Controls.Add(this.kD);     // - added input
+            this.Controls.Add(this.txtkD);  // - added input
             this.Controls.Add(this.txtStartTheta);
             this.Controls.Add(this.desiredT);
             this.Controls.Add(this.lblTemp4);
@@ -1178,6 +1247,12 @@
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label desiredT;
         public System.Windows.Forms.TextBox txtStartTheta;
+        public System.Windows.Forms.TextBox txtkP; // - added input
+        public System.Windows.Forms.TextBox txtkI; // - added input
+        public System.Windows.Forms.TextBox txtkD; // - added input
+        public System.Windows.Forms.Label kP;   // - added input
+        public System.Windows.Forms.Label kI;   // - added input
+        public System.Windows.Forms.Label kD;   // - added input
     }
 }
 
