@@ -330,8 +330,11 @@ namespace DrRobot.JaguarControl
                 jaguarControl.simulatedJaguar.UpdateSensors(deltaT);
 
                 // Get most recenct encoder measurements
+                lastEncoderPulseL = currentEncoderPulseL;
+                lastEncoderPulseR = currentEncoderPulseR;
                 currentEncoderPulseL = simulatedJaguar.GetEncoderPulse4();
                 currentEncoderPulseR = simulatedJaguar.GetEncoderPulse5();
+                
             }
             else
             {
@@ -345,6 +348,8 @@ namespace DrRobot.JaguarControl
                     currentAccel_z = jaguarControl.getAccel_z();
                    
                     // Update Encoder Measurements
+                    lastEncoderPulseL = currentEncoderPulseL;
+                    lastEncoderPulseR = currentEncoderPulseR;
                     currentEncoderPulseL = jaguarControl.realJaguar.GetEncoderPulse4();
                     currentEncoderPulseR = jaguarControl.realJaguar.GetEncoderPulse5();
 
