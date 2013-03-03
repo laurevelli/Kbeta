@@ -1196,6 +1196,20 @@ namespace DrRobot.JaguarControl
             controlMode = AUTONOMOUS;
         }
 
+        private void btnSaveWaypoint_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                navigation.desiredX = double.Parse(txtStartLat.Text);
+                navigation.desiredY = double.Parse(txtStartLong.Text);
+                navigation.desiredT = double.Parse(txtStartTheta.Text);
+            }
+            catch
+            {
+            }
+            controlMode = AUTONOMOUS;
+        }
+
         # endregion
 
     }

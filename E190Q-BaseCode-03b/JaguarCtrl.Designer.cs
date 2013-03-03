@@ -83,6 +83,7 @@
             this.lblTemp2 = new System.Windows.Forms.Label();
             this.lblTemp1 = new System.Windows.Forms.Label();
             this.btnSetMapCenter = new System.Windows.Forms.Button();
+            this.btnSaveWaypoint = new System.Windows.Forms.Button();   // - added button
             this.tmrJoyStickPoll = new System.Windows.Forms.Timer(this.components);
             this.trackBarTurnPower = new System.Windows.Forms.TrackBar();
             this.trackBarForwardPower = new System.Windows.Forms.TrackBar();
@@ -601,7 +602,7 @@
             // - added input
             this.kP.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.kP.ForeColor = System.Drawing.Color.Black;
-            this.kP.Location = new System.Drawing.Point(180, 517);
+            this.kP.Location = new System.Drawing.Point(180, 510);
             this.kP.Name = "kP";
             this.kP.Size = new System.Drawing.Size(25, 18);
             this.kP.TabIndex = 26;
@@ -611,7 +612,7 @@
             // - added input
             this.kI.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.kI.ForeColor = System.Drawing.Color.Black;
-            this.kI.Location = new System.Drawing.Point(180, 537);
+            this.kI.Location = new System.Drawing.Point(180, 530);
             this.kI.Name = "kI";
             this.kI.Size = new System.Drawing.Size(25, 18);
             this.kI.TabIndex = 26;
@@ -621,7 +622,7 @@
             // - added input
             this.kD.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.kD.ForeColor = System.Drawing.Color.Black;
-            this.kD.Location = new System.Drawing.Point(180, 557);
+            this.kD.Location = new System.Drawing.Point(180, 550);
             this.kD.Name = "kD";
             this.kD.Size = new System.Drawing.Size(25, 18);
             this.kD.TabIndex = 26;
@@ -769,6 +770,17 @@
             this.btnSetMapCenter.Text = "SaveSetPoint";
             this.btnSetMapCenter.UseVisualStyleBackColor = true;
             this.btnSetMapCenter.Click += new System.EventHandler(this.btnSetMapCenter_Click);
+            // 
+            // btnSaveWaypoint  // - added button
+            // 
+            this.btnSaveWaypoint.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSaveWaypoint.Location = new System.Drawing.Point(485, 457);
+            this.btnSaveWaypoint.Name = "btnSaveWaypoint";
+            this.btnSaveWaypoint.Size = new System.Drawing.Size(60, 45);
+            this.btnSaveWaypoint.TabIndex = 44;
+            this.btnSaveWaypoint.Text = "Save\nWaypoint";
+            this.btnSaveWaypoint.UseVisualStyleBackColor = true;
+            this.btnSaveWaypoint.Click += new System.EventHandler(this.btnSaveWaypoint_Click);
             // 
             // tmrJoyStickPoll
             // 
@@ -1049,7 +1061,7 @@
             // txtkP    // - added input
             // 
             this.txtkP.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtkP.Location = new System.Drawing.Point(207, 517);
+            this.txtkP.Location = new System.Drawing.Point(207, 510);
             this.txtkP.Name = "txtkP";
             this.txtkP.Size = new System.Drawing.Size(47, 20);
             this.txtkP.TabIndex = 70;
@@ -1058,7 +1070,7 @@
             // txtkI    // - added input
             // 
             this.txtkI.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtkI.Location = new System.Drawing.Point(207, 537);
+            this.txtkI.Location = new System.Drawing.Point(207, 530);
             this.txtkI.Name = "txtkI";
             this.txtkI.Size = new System.Drawing.Size(47, 20);
             this.txtkI.TabIndex = 70;
@@ -1067,7 +1079,7 @@
             // txtkD    // - added input
             // 
             this.txtkD.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtkD.Location = new System.Drawing.Point(207, 557);
+            this.txtkD.Location = new System.Drawing.Point(207, 550);
             this.txtkD.Name = "txtkD";
             this.txtkD.Size = new System.Drawing.Size(47, 20);
             this.txtkD.TabIndex = 70;
@@ -1108,6 +1120,7 @@
             this.Controls.Add(this.btnLaserScan);
             this.Controls.Add(this.trackBarTurnPower);
             this.Controls.Add(this.btnSetMapCenter);
+            this.Controls.Add(this.btnSaveWaypoint);    // - added button
             this.Controls.Add(this.trackBarForwardPower);
             this.Controls.Add(this.lblTemp1);
             this.Controls.Add(this.lblMot3);
@@ -1217,6 +1230,7 @@
         private System.Windows.Forms.Label lblTemp1;
         private System.Windows.Forms.Label lblBatVol;
         private System.Windows.Forms.Button btnSetMapCenter;
+        private System.Windows.Forms.Button btnSaveWaypoint;    // - added button
         private System.Windows.Forms.Timer tmrJoyStickPoll;
         private System.Windows.Forms.TrackBar trackBarTurnPower;
         private System.Windows.Forms.TrackBar trackBarForwardPower;

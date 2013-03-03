@@ -15,10 +15,10 @@ namespace DrRobot.JaguarControl
         public double x, y, t;
         public double x_est, y_est, t_est;
         public double desiredX, desiredY, desiredT;
-        public double closeThresh = 0.1, thetaThresh =  0.05; // "close-enough" threshold
+        public double closeThresh = 0.1, thetaThresh = 0.05; // "close-enough" threshold   // lab 3
 
-        public double delta_x, delta_y, rho, alpha, beta;
-        public double desiredV, desiredW;
+        public double delta_x, delta_y, rho, alpha, beta;   // lab 3
+        public double desiredV, desiredW;                   // lab 3
 
         public double currentEncoderPulseL, currentEncoderPulseR;
         public double lastEncoderPulseL, lastEncoderPulseR;
@@ -60,10 +60,10 @@ namespace DrRobot.JaguarControl
         double time = 0;
         DateTime startTime;
 
-        public double K_P = 15;//15;
-        public double K_I = 0;//0;
-        public double K_D = 3;//3;
-        public short frictionComp = 8750;//8750;
+        public double K_P = 15;//15;    // lab 3
+        public double K_I = 0;//0;      // lab 3
+        public double K_D = 3;//3;      // lab 3
+        public short frictionComp = 8750;
         public double e_sum_R, e_sum_L;
         public double u_R = 0;
         public double u_L = 0;
@@ -75,7 +75,7 @@ namespace DrRobot.JaguarControl
 
         const double maxTickSpeed = 802;
         // max speed 2.36 [m/s]*(1/(wheelRadius[m]*2*pi))*190[ticks/rev]
-        const short simMaxTickSpeed = 85;
+        const short simMaxTickSpeed = 85;   // lab 3
         // max speed 0.25 [m/s] = 85; same calculation as above
         const int realMaxTickSpeed = 30000;
 
