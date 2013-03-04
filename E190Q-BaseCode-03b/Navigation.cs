@@ -548,9 +548,10 @@ namespace DrRobot.JaguarControl
             }
 
             // state estimation eqn 1:
-            beta = -t - alpha - desiredT;
+            beta = -t - alpha + desiredT;
 
             // constraint calculated beta:
+            // alpha = normalizeAngle(alpha);
             beta = normalizeAngle(beta);
 
             // state estimation eqn 2:
@@ -558,25 +559,15 @@ namespace DrRobot.JaguarControl
 
             angVelR = (desiredV / (2 * robotRadius)) + (desiredW / 2);
             angVelL = (-desiredV / (2 * robotRadius)) + (desiredW / 2);
-            desiredRotRateR = (short)(   ((angVelR * 2 * robotRadius / wheelRadius) / (2 * Math.PI)) * 190);    // [pulses/second]
-            desiredRotRateL = (short)(   ((angVelL * 2 * robotRadius / wheelRadius) / (2 * Math.PI)) * 190);
+            desiredRotRateR = (short)(   ((  (angVelR * 2 * robotRadius) / wheelRadius) / (2 * Math.PI) ) * 190);    // [pulses/second]
+            desiredRotRateL = (short)(   (( (angVelL * 2 * robotRadius) / wheelRadius) / (2 * Math.PI) ) * 190);
 
             // Kill motor signals if robot is "close enough" to target location:
-            if ((rho < closeThresh) && (beta < thetaThresh))
-            {
-                desiredRotRateR = 0;
-                desiredRotRateL = 0;
-            }
-
-            // constrain max values proportionally:
-            //if (desiredRotRateL > 0)
-            //    desiredRotRateL += 5;
-            //if (desiredRotRateR > 0)
-            //    desiredRotRateR += 5;
-            //if (desiredRotRateL < 0)
-            //    desiredRotRateL -= 5;
-            //if (desiredRotRateR < 0)
-            //    desiredRotRateR -= 5;
+            //if ((rho < closeThresh) && (alpha < thetaThresh))
+            //{
+            //    desiredRotRateR = 0;
+            //    desiredRotRateL = 0;
+            //}
 
         }
 
