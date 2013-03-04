@@ -53,7 +53,7 @@ namespace DrRobot.JaguarControl
         private double maxVelocity = 0.25;
         private double Krho = 1.0;  //.1;//0.005;//1;                // Krho > 0 (Conditions for stability)
         private double Kalpha = 3;  //0.0533;//2;             // Kalpha - Krho > 0
-        private double Kbeta = -2;  //-0.00333;//-0.5//-1.0;   // Kbeta < 0
+        private double Kbeta = -3;  //-0.00333;//-0.5//-1.0;   // Kbeta < 0
         const double alphaTrackingAccuracy = 0.10;
         const double betaTrackingAccuracy = 0.1;
         const double rhoTrackingAccuracy = 0.10;
@@ -531,6 +531,7 @@ namespace DrRobot.JaguarControl
 
             rho = Math.Sqrt((Math.Pow(delta_x, 2) + Math.Pow(delta_y, 2)));
             alpha = -t + Math.Atan2(delta_y, delta_x);
+
             desiredV = Krho * rho;
 
             // constrain calculated alpha:
@@ -540,11 +541,11 @@ namespace DrRobot.JaguarControl
             if (Math.Abs(alpha) > (Math.PI / 2))
             {
                 // recalculate alpha and desiredV to drive backwards:
-                alpha = -t + Math.Atan2(-delta_y, -delta_x);
+                alpha = -t + Math.Atan2(delta_y, delta_x);
                 // constrain calculated alpha:
                 alpha = normalizeAngle(alpha);
 
-                desiredV = -Krho * rho;
+                desiredV = (-Krho) * rho;
             }
 
             // state estimation eqn 1:
@@ -709,23 +710,24 @@ namespace DrRobot.JaguarControl
             double normalizedAngle = angleInput;
 
             // handle negative overshoot:
-            if (normalizedAngle > Math.PI)
+            if (normalizedAngle >= Math.PI)
             {
-                while (normalizedAngle > (Math.PI))
+                while (normalizedAngle >= (Math.PI))
                     normalizedAngle -= (2 * Math.PI);
                 return normalizedAngle;
             }
 
             // handle positive overshoot:
-            if (normalizedAngle < (-Math.PI))
+            else if (normalizedAngle <= (-Math.PI))
             {
-                while (normalizedAngle < (-Math.PI))
+                while (normalizedAngle <= (-Math.PI))
                     normalizedAngle += (2 * Math.PI);
                 return normalizedAngle;
             }
 
             // handle no overshoot:
-            return normalizedAngle;
+            else
+                return normalizedAngle;
         }
 
         #endregion
