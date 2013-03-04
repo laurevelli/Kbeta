@@ -51,9 +51,9 @@ namespace DrRobot.JaguarControl
         private double angleTravelled, distanceTravelled;
         private double diffEncoderPulseL, diffEncoderPulseR;
         private double maxVelocity = 0.25;
-        private double Krho = 1.0;//.1;//0.005;//1;                // Krho > 0 (Conditions for stability)
-        private double Kalpha = 2;//0.0533;//2;             // Kalpha - Krho > 0
-        private double Kbeta = -0.5;//-0.00333;//-0.5//-1.0;   // Kbeta < 0
+        private double Krho = 1.0;  //.1;//0.005;//1;                // Krho > 0 (Conditions for stability)
+        private double Kalpha = 3;  //0.0533;//2;             // Kalpha - Krho > 0
+        private double Kbeta = -2;  //-0.00333;//-0.5//-1.0;   // Kbeta < 0
         const double alphaTrackingAccuracy = 0.10;
         const double betaTrackingAccuracy = 0.1;
         const double rhoTrackingAccuracy = 0.10;
@@ -75,7 +75,7 @@ namespace DrRobot.JaguarControl
 
         const double maxTickSpeed = 802;
         // max speed 2.36 [m/s]*(1/(wheelRadius[m]*2*pi))*190[ticks/rev]
-        const short simMaxTickSpeed = 85;   // lab 3
+        const short simMaxTickSpeed = 125;   // lab 3
         // max speed 0.25 [m/s] = 85; same calculation as above
         const int realMaxTickSpeed = 30000;
 
@@ -228,8 +228,6 @@ namespace DrRobot.JaguarControl
                         // Determine the desired PWM signals for desired wheel speeds
                         CalcMotorSignals();
                         ActuateMotorsWithPWMControl();
-                        // CalcSimulatedMotorSignals();
-                        // ActuateMotorsWithVelControl();
                     }
 
                 }
@@ -245,7 +243,7 @@ namespace DrRobot.JaguarControl
                 LogData();
 
                 // Sleep to approximate 20 Hz update rate
-                Thread.Sleep(deltaT); //not sure if this works anymore..... -wf
+                Thread.Sleep(deltaT);
                 // Thread.Sleep(500);
 
             }
@@ -403,9 +401,9 @@ namespace DrRobot.JaguarControl
             //double K_i = 12; // deltaT;//20
             //double K_d = 100.1;
 
-            // Krho = 1.5;
-            // Kalpha = 8;//4
-            // Kbeta = -0.8;//-1.0;
+            Krho = 1.0;             // Krho > 0 (Conditions for stability)
+            Kalpha = 3;//4          // Kalpha - Krho > 0
+            Kbeta = -2;//-1.0;    // Kbeta < 0
 
             u_R = K_P * e_R + K_I * e_sum_R + K_D * e_dir_R;
             u_L = K_P * e_L + K_I * e_sum_L + K_D * e_dir_L;

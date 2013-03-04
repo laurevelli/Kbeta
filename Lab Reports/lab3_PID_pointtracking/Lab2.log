@@ -1,0 +1,424 @@
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.2.13)  3 MAR 2013 19:59
+entering extended mode
+**C:/Users/Lauren/Documents/LaTeX/lab3_PID_pointtracking/Lab2.tex
+(C:/Users/Lauren/Documents/LaTeX/lab3_PID_pointtracking/Lab2.tex
+LaTeX2e <2011/06/27>
+Babel <v3.8m> and hyphenation patterns for english, afrikaans, ancientgreek, ar
+abic, armenian, assamese, basque, bengali, bokmal, bulgarian, catalan, coptic, 
+croatian, czech, danish, dutch, esperanto, estonian, farsi, finnish, french, ga
+lician, german, german-x-2012-05-30, greek, gujarati, hindi, hungarian, iceland
+ic, indonesian, interlingua, irish, italian, kannada, kurmanji, latin, latvian,
+ lithuanian, malayalam, marathi, mongolian, mongolianlmc, monogreek, ngerman, n
+german-x-2012-05-30, nynorsk, oriya, panjabi, pinyin, polish, portuguese, roman
+ian, russian, sanskrit, serbian, slovak, slovenian, spanish, swedish, swissgerm
+an, tamil, telugu, turkish, turkmen, ukenglish, ukrainian, uppersorbian, usengl
+ishmax, welsh, loaded.
+(C:\Users\Lauren\Documents\LaTeX\lab3_PID_pointtracking\IEEEtran.cls
+Document Class: IEEEtran 2012/11/21 V1.8c by Harald Hanche-Olsen and Anders Chr
+istensen
+-- Based on V1.7a by Michael Shell
+-- See the "IEEEtran_HOWTO" manual for usage information.
+-- http://www.michaelshell.org/tex/ieeetran/
+\@IEEEtrantmpdimenA=\dimen102
+\@IEEEtrantmpdimenB=\dimen103
+\@IEEEtrantmpcountA=\count79
+\@IEEEtrantmpcountB=\count80
+\@IEEEtrantmptoksA=\toks14
+LaTeX Font Info:    Try loading font information for OT1+ptm on input line 373.
+
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\psnfss\ot1ptm.fd"
+File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
+)
+-- Using 8.5in x 11in (letter) paper.
+-- Using PDF output.
+\@IEEEnormalsizeunitybaselineskip=\dimen104
+-- This is a 10 point document.
+\CLASSINFOnormalsizebaselineskip=\dimen105
+\CLASSINFOnormalsizeunitybaselineskip=\dimen106
+\IEEEnormaljot=\dimen107
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <5> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 731.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <5> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 731.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 731.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <7> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 731.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <8> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 731.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <8> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 731.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 731.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <9> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 731.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 731.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <10> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 731.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <11> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 731.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <11> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 731.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 731.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <12> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 731.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <17> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 731.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <17> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 731.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <20> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 731.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <20> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 731.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <24> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 731.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <24> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 731.
+\IEEEilabelindentA=\dimen108
+\IEEEilabelindentB=\dimen109
+\IEEEilabelindent=\dimen110
+\IEEEelabelindent=\dimen111
+\IEEEdlabelindent=\dimen112
+\IEEElabelindent=\dimen113
+\IEEEiednormlabelsep=\dimen114
+\IEEEiedmathlabelsep=\dimen115
+\IEEEiedtopsep=\skip41
+\c@section=\count81
+\c@subsection=\count82
+\c@subsubsection=\count83
+\c@paragraph=\count84
+\c@IEEEsubequation=\count85
+\abovecaptionskip=\skip42
+\belowcaptionskip=\skip43
+\c@figure=\count86
+\c@table=\count87
+\@IEEEeqnnumcols=\count88
+\@IEEEeqncolcnt=\count89
+\@IEEEtmpitemindent=\dimen116
+\c@IEEEbiography=\count90
+\@IEEEtranrubishbin=\box26
+) ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\cite\cite.sty"
+LaTeX Info: Redefining \cite on input line 302.
+LaTeX Info: Redefining \nocite on input line 373.
+Package: cite 2010/09/10  v 5.3
+)
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\graphics\graphicx.sty"
+Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\graphics\keyval.sty"
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks15
+)
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\graphics\graphics.sty"
+Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
+
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\graphics\trig.sty"
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\00miktex\graphics.cfg"
+File: graphics.cfg 2007/01/18 v1.5 graphics configuration of teTeX/TeXLive
+)
+Package graphics Info: Driver file: pdftex.def on input line 91.
+
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\pdftex-def\pdftex.def"
+File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
+
+("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\oberdiek\infwarerr.sty"
+Package: infwarerr 2010/04/08 v1.3 Providing info/warning/error messages (HO)
+)
+("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\oberdiek\ltxcmds.sty"
+Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
+)
+\Gread@gobject=\count91
+))
+\Gin@req@height=\dimen117
+\Gin@req@width=\dimen118
+)
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\algorithm2e\algorithm2e.sty"
+Package: algorithm2e 2013/01/06 v5.00 algorithms environments
+\c@AlgoLine=\count92
+
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\ifthen.sty"
+Package: ifthen 2001/05/26 v1.1c Standard LaTeX ifthen package (DPC)
+)
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\tools\xspace.sty"
+Package: xspace 2009/10/20 v1.13 Space after command names (DPC,MH)
+)
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\ltxmisc\relsize.sty"
+Package: relsize 2003/07/04 ver 3.1
+)
+********************************************************
+Package `algorithm2e' Release 5.0 -- january 06 2013 --
+- algorithm2e-announce@lirmm.fr mailing list for announcement about releases
+- algorithm2e-discussion@lirmm.fr mailing list for discussion about package
+subscribe by emailing sympa@lirmm.fr with 'subscribe <list> <firstname name>'
+- Author: Christophe Fiorio (cfiorio@um2.fr)
+********************************************************
+\skiptotal=\skip44
+\skiplinenumber=\skip45
+\skiprule=\skip46
+\skiphlne=\skip47
+\skiptext=\skip48
+\skiplength=\skip49
+\algomargin=\skip50
+\skipalgocfslide=\skip51
+\algowidth=\dimen119
+\inoutsize=\dimen120
+\inoutindent=\dimen121
+\interspacetitleruled=\dimen122
+\interspacealgoruled=\dimen123
+\interspacetitleboxruled=\dimen124
+\algocf@inoutbox=\box27
+\algocf@inputbox=\box28
+\AlCapSkip=\skip52
+\AlCapHSkip=\skip53
+\algoskipindent=\skip54
+\algocf@nlbox=\box29
+\algocf@hangingbox=\box30
+\algocf@untilbox=\box31
+\algocf@skipuntil=\skip55
+\algocf@capbox=\box32
+\algoheightruledefault=\skip56
+\algoheightrule=\skip57
+\algotitleheightruledefault=\skip58
+\algotitleheightrule=\skip59
+\c@algocfline=\count93
+\c@algocfproc=\count94
+\c@algocf=\count95
+\algocf@algoframe=\box33
+\algocf@algobox=\box34
+) ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\subfigure\subfigure.sty"
+Package: subfigure 2002/07/30 v2.1.4 subfigure package
+\subfigtopskip=\skip60
+\subfigcapskip=\skip61
+\subfigcaptopadj=\dimen125
+\subfigbottomskip=\skip62
+\subfigcapmargin=\dimen126
+\subfiglabelskip=\skip63
+\c@subfigure=\count96
+\c@lofdepth=\count97
+\c@subtable=\count98
+\c@lotdepth=\count99
+
+****************************************
+* Local config file subfigure.cfg used *
+****************************************
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\subfigure\subfigure.cfg")
+\subfig@top=\skip64
+\subfig@bottom=\skip65
+)
+(C:\Users\Lauren\Documents\LaTeX\lab3_PID_pointtracking\Lab2.aux)
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 317.
+LaTeX Font Info:    ... okay on input line 317.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 317.
+LaTeX Font Info:    ... okay on input line 317.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 317.
+LaTeX Font Info:    ... okay on input line 317.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 317.
+LaTeX Font Info:    ... okay on input line 317.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 317.
+LaTeX Font Info:    ... okay on input line 317.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 317.
+LaTeX Font Info:    ... okay on input line 317.
+
+("C:\Program Files (x86)\MiKTeX 2.9\tex\context\base\supp-pdf.mkii"
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count100
+\scratchdimen=\dimen127
+\scratchbox=\box35
+\nofMPsegments=\count101
+\nofMParguments=\count102
+\everyMPshowfont=\toks16
+\MPscratchCnt=\count103
+\MPscratchDim=\dimen128
+\MPnumerator=\count104
+\makeMPintoPDFobject=\count105
+\everyMPtoPDFconversion=\toks17
+)
+Underfull \hbox (badness 10000) in paragraph at lines 337--339
+
+ []
+
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 362.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 362.
+<jaguarLite.png, id=1, 3276.24pt x 1846.9pt>
+File: jaguarLite.png Graphic file (type png)
+ <use jaguarLite.png>
+Package pdftex.def Info: jaguarLite.png used on input line 368.
+(pdftex.def)             Requested size: 216.81pt x 122.19449pt.
+
+Underfull \vbox (badness 6412) has occurred while \output is active []
+
+ [1{C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map}
+
+
+ <C:/Users/Lauren/Documents/LaTeX/lab3_PID_pointtracking/jaguarLite.png>]
+<measurements.png, id=16, 120.45pt x 84.315pt>
+File: measurements.png Graphic file (type png)
+ <use measurements.png>
+Package pdftex.def Info: measurements.png used on input line 416.
+(pdftex.def)             Requested size: 231.26378pt x 161.90092pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 416--418
+[][]
+ []
+
+<origin.png, id=18, 2295.57625pt x 1436.36626pt>
+File: origin.png Graphic file (type png)
+ <use origin.png>
+Package pdftex.def Info: origin.png used on input line 427.
+(pdftex.def)             Requested size: 231.26378pt x 144.69705pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 427--429
+[][]
+ []
+
+<grass_avg.png, id=19, 465.99094pt x 387.69844pt>
+File: grass_avg.png Graphic file (type png)
+ <use grass_avg.png>
+Package pdftex.def Info: grass_avg.png used on input line 443.
+(pdftex.def)             Requested size: 234.87749pt x 195.41641pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 443--445
+[][]
+ []
+
+<concrete_avg.png, id=20, 499.11469pt x 409.53pt>
+File: concrete_avg.png Graphic file (type png)
+ <use concrete_avg.png>
+Package pdftex.def Info: concrete_avg.png used on input line 447.
+(pdftex.def)             Requested size: 234.87749pt x 192.71658pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 447--449
+[][]
+ []
+
+<grass_error.png, id=21, 421.575pt x 316.18124pt>
+File: grass_error.png Graphic file (type png)
+ <use grass_error.png>
+Package pdftex.def Info: grass_error.png used on input line 460.
+(pdftex.def)             Requested size: 234.87749pt x 176.1581pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 460--462
+[][]
+ []
+
+
+Underfull \vbox (badness 2351) has occurred while \output is active []
+
+ [2 <C:/Users/Lauren/Documents/LaTeX/lab3_PID_pointtracking/measurements.png> <
+C:/Users/Lauren/Documents/LaTeX/lab3_PID_pointtracking/origin.png> <C:/Users/La
+uren/Documents/LaTeX/lab3_PID_pointtracking/grass_avg.png (PNG copy)> <C:/Users
+/Lauren/Documents/LaTeX/lab3_PID_pointtracking/concrete_avg.png (PNG copy)>]
+<concrete_error.png, id=26, 421.575pt x 316.18124pt>
+File: concrete_error.png Graphic file (type png)
+ <use concrete_error.png>
+Package pdftex.def Info: concrete_error.png used on input line 464.
+(pdftex.def)             Requested size: 234.87749pt x 176.1581pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 464--466
+[][]
+ []
+
+<tiles_average.png, id=27, 421.575pt x 324.46219pt>
+File: tiles_average.png Graphic file (type png)
+ <use tiles_average.png>
+Package pdftex.def Info: tiles_average.png used on input line 478.
+(pdftex.def)             Requested size: 234.87749pt x 180.77176pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 478--480
+[][]
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+<tiles_error.png, id=28, 421.575pt x 330.48468pt>
+File: tiles_error.png Graphic file (type png)
+ <use tiles_error.png>
+Package pdftex.def Info: tiles_error.png used on input line 483.
+(pdftex.def)             Requested size: 234.87749pt x 184.12715pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 483--485
+[][]
+ []
+
+<tiles_rotation.png, id=29, 414.04688pt x 338.76563pt>
+File: tiles_rotation.png Graphic file (type png)
+
+<use tiles_rotation.png>
+Package pdftex.def Info: tiles_rotation.png used on input line 500.
+(pdftex.def)             Requested size: 234.87749pt x 192.1783pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 500--502
+[][]
+ []
+
+<tiles_rotation_error.png, id=30, 421.575pt x 336.50719pt>
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [3 <C:/Users/Lauren/Documents/LaTeX/lab3_PID_pointtracking/grass_error.png (PN
+G copy)> <C:/Users/Lauren/Documents/LaTeX/lab3_PID_pointtracking/concrete_error
+.png (PNG copy)> <C:/Users/Lauren/Documents/LaTeX/lab3_PID_pointtracking/tiles_
+average.png (PNG copy)> <C:/Users/Lauren/Documents/LaTeX/lab3_PID_pointtracking
+/tiles_error.png (PNG copy)>]
+File: tiles_rotation_error.png Graphic file (type png)
+ <use tiles_rotation_error.png>
+Package pdftex.def Info: tiles_rotation_error.png used on input line 505.
+(pdftex.def)             Requested size: 234.87749pt x 187.48254pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 505--507
+[][]
+ []
+
+LaTeX Font Info:    Try loading font information for OT1+pcr on input line 553.
+
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\psnfss\ot1pcr.fd"
+File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
+)
+
+** Conference Paper **
+Before submitting the final camera ready copy, remember to:
+
+ 1. Manually equalize the lengths of two columns on the last page
+ of your paper;
+
+ 2. Ensure that any PostScript and/or PDF output post-processing
+ uses only Type 1 fonts and that every step in the generation
+ process uses the appropriate paper size.
+
+[4 <C:/Users/Lauren/Documents/LaTeX/lab3_PID_pointtracking/tiles_rotation.png (
+PNG copy)> <C:/Users/Lauren/Documents/LaTeX/lab3_PID_pointtracking/tiles_rotati
+on_error.png (PNG copy)>]
+(C:\Users\Lauren\Documents\LaTeX\lab3_PID_pointtracking\Lab2.aux) ) 
+Here is how much of TeX's memory you used:
+ 3542 strings out of 493921
+ 53201 string characters out of 3144873
+ 130139 words of memory out of 3000000
+ 6832 multiletter control sequences out of 15000+200000
+ 35765 words of font info for 66 fonts, out of 3000000 for 9000
+ 844 hyphenation exceptions out of 8191
+ 27i,6n,24p,798b,297s stack positions out of 5000i,500n,10000p,200000b,50000s
+{C:/Program 
+Files (x86)/MiKTeX 2.9/fonts/enc/dvips/fontname/8r.enc}<C:/Program Files (x86)/
+MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Program Files (x86)/Mi
+KTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program Files (x86)/MiKT
+eX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files (x86)/MiKTeX 
+2.9/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Program Files (x86)/MiKTeX 2.9/
+fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fo
+nts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts
+/type1/urw/courier/ucrr8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/ur
+w/times/utmb8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/urw/times/utm
+bi8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/urw/times/utmr8a.pfb><C
+:/Program Files (x86)/MiKTeX 2.9/fonts/type1/urw/times/utmri8a.pfb>
+Output written on Lab2.pdf (4 pages, 15780436 bytes).
+PDF statistics:
+ 73 PDF objects out of 1000 (max. 8388607)
+ 0 named destinations out of 1000 (max. 500000)
+ 56 words of extra memory for PDF output out of 10000 (max. 10000000)
+

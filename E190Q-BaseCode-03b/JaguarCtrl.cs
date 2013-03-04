@@ -53,6 +53,7 @@ namespace DrRobot.JaguarControl
         private static Pen thinWhitePen = new Pen(Color.White, 1);
         private static Pen goldPen = new Pen(Color.Gold, 1);
         private static Pen trackPen = new Pen(Brushes.LightGray);
+        private static Pen redPen = new Pen(Color.IndianRed, 5);
         private static double cellWidth = 1.0; // in meters, mapResolution is in metersToPixels
         #endregion
 
@@ -288,6 +289,8 @@ namespace DrRobot.JaguarControl
                 int X_laser = (int)(xCenter + xShift + laserDiagonal * Math.Cos(navigation.t) - laserDiameter / 2);
                 int Y_laser = (int)(yCenter - yShift - laserDiagonal * Math.Sin(navigation.t) - laserDiameter / 2);
                 g.FillEllipse(Brushes.LightGray, X_laser, Y_laser, laserDiameter, laserDiameter);
+
+                //g.FillEllipse(Brushes.LavenderBlush, (float)(navigation.x + 2.0), (float)(navigation.y + 2.0), 5.0,5.0);
 
                 // Draw the bitmap to the form
                 this.CreateGraphics().DrawImageUnscaled(gBuffer, 0, 0);
@@ -1200,9 +1203,9 @@ namespace DrRobot.JaguarControl
         {
             try
             {
-                navigation.desiredX = double.Parse(txtStartLat.Text);
-                navigation.desiredY = double.Parse(txtStartLong.Text);
-                navigation.desiredT = double.Parse(txtStartTheta.Text);
+                navigation.desiredX = float.Parse(txtStartLat.Text);
+                navigation.desiredY = float.Parse(txtStartLong.Text);
+                navigation.desiredT = float.Parse(txtStartTheta.Text);
             }
             catch
             {
