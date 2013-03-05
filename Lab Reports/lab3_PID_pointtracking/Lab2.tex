@@ -342,18 +342,13 @@ This paper describes the implementation of point tracking for the \emph{Jaguar L
 \end{abstract} 
 
 \section{Introduction}
-Autonomous localization is a critical step in algorithm development on robotic platforms.  Answering the simple question: ``Where am I in
-a known environment?'' is a task that can be answered using external sensors.
-However, before such a question can be addressed, the designers must first
-understand the limitations of the robot's odometry sensors which form the basis
- of estimating the robot's pose in a given environment. In the following paper, 
-we the designers carry out a series of experiments necessary to characterize 
-the accuracy of the incremental encoders on the Jaguar Lite platform, and our findings confirm a linear relationship between 
-odometry-based localization and actual robot position for several types of terrain. 
-
-We characterize both the robot's linear displacement and angular 
-displacement relative to it's true displacement measured through the use of 
-external measuring equipment.
+\emph{Point Tracking} refers to a robot's ability to transition 
+from one pose to another on a known map of its environment. By modeling the 
+robot's drive train with a motion model and by incorporating odometric 
+sensor reading into this motion model, the robot can develop a trajectory 
+between points.  In the following paper, we incorporate both a differential drive-train 
+motion model with a PID-controlled differential drive train to designate the
+Jaguar Lite robotic platform to track points on a two-dimensional environment.
 
 \subsection{Hardware Platform}
 The hardware platform of choice is a Jaguar Lite autonomous vehicle, sourced 
@@ -374,22 +369,32 @@ This paper refers to specific definitions and usage of the following terms:
 \begin{itemize}
 \item \noindent \textbf{Pose} represents the robot's position: $[x,y,\theta]$ relative to a 
 coordinate frame fixed to the environment that the robot navigates.
+ 
+\item \noindent \textbf{Nonholonomic Constraints} refers to a restricted motion path 
+constrained by the physcial construction of the robot.  On a two-dimensional coordinate 
+frame, a robot that can freely
+rotate and translate is considered a holonomic robot. 
 
-\item \noindent\textbf{Linear drift} for a given axis is defined to be the difference between the 
-robot's true displacement and the robot's calculated displacement from encoder
-measurements.
+\item \noindent \textbf{Point Tracking} refers to the Jaguar Lite's ability to transfer
+from one pose to another on a navigable coordinate frame.
 
-\item \noindent\textbf{Angular drift}  is the difference between the robot's true 
-angular offset (relative to a fixed coordinate frame) and its 
-calculated angular offset relative to its starting position.
 \end{itemize}
 
-A measurement is characterized as \emph{true} if it is the measurement calculated 
-in the environment with external measuring tools, such as a meterstick or
-compass. Another measurement from on-board sensors may be considered true if and only if it corresponds to the localization measurements in the global coordinate frame.
- 
 \section{Method}
+
 \subsection{Motion Model}
+To determine the robot's motor outputs, an effective motion model which reflects
+the robot's holonomic constraints must first be developed.  The Jaguar Lite 
+moves with a differential drive train.  For this reason, the motion model cannot 
+incorporate direct translation of the robot in a direction normal to the sides of
+the robot. Figure XXXX illustrates possible trajectories, each of which is 
+governed by the speed of the right wheel, $\omega_1$ and the left wheel, $\omega_2$.
+
+%% EQUATION HERE
+
+Given a differential drive train, we can have chosen the following motion model
+\cite{Textbook}:
+
 \begin{equation}
 \rho = \sqrt{\Delta x^2 + \Delta y^2}
 \end{equation}
@@ -399,140 +404,59 @@ compass. Another measurement from on-board sensors may be considered true if and
 \begin{equation}
 \beta = -\theta -\alpha
 \end{equation}
+
+In the equations above, $x$ and $y$ define the horizontal and vertical displacements
+respectively, relative to a fixed initial coordinate frame.  $\theta$ defines the 
+angular displacement of of the robot normal vector relative to the x axis.  
+$\rho$ defines the magnitude of the displacement from the robot pose to the 
+desired pose.  $\alpha$ defines the error of the robot normal vector relative to 
+the desired angle relative to the goal.  $\beta$ defines the angle of the goal vector 
+relative to the horizontal.  These angles are depicted in the illustration below:
+
+%% ILLUSTRATION HERE 
+
+The above equations are sufficient to determine the error in the robot's pose from 
+the desired pose, as well as the linear and angular corrections that must be made.  
+Next, by weighing the errors, two more equations can be produced, which define the
+Jaguar Lite's \emph{linear}, $v$, and \emph{angular}, $\omega$, velocities as a 
+function of the error values: $\rho$, $\alpha$, and $\beta$.  
+
+\begin{equation}
+v = k_{\rho}
+\end{equation}
+\begin{equation}
+\omega = k_{\alpha} \alpha  +  k_{\beta} \beta 
+\end{equation}
+where $k_{\rho}$, $k_{\alpha}$, and $k_{\beta}$ are constants.
+
+Therefore, given that equations [4] and [5] model the Jaguar Lite's desired
+ change in displacement over time, the equations below must ultimately be solely determined from
+the rotations of the left and right wheels.  Equations [6] and [7] fulfill 
+this requirement.
+\begin{equation}
+\omega(t) = \omega_1 + \omega_2 
+\end{equation} 
+\begin{equation}
+v(t) = L \left( \omega_1 - \omega_2 \right)
+\end{equation}
+where $L$ is the radius of the robot.
+Thus, the overall left and right angular velocities, $\omega_1$ and $\omega_2$, may 
+be determined by combining the previous equations to produce:
+\begin{equation}
+\omega_1 = \frac{v}{2L} + \frac{\omega}{2}
+\end{equation}
+
+\begin{equation}
+\omega_2 = -\frac{v}{2L} + \frac{\omega}{2} 
+\end{equation}
+
+%% not sure if this still jives with the rest
 Assuming the robot is travelling on a circular arc of constant radius, we can apply basic circle geometry to calculate the distance traveled $\Delta s$ and the change in orientation $\Delta\theta$ of each tread of the Jaguar Lite robot for time step $\Delta t$. These changes in displacement are within the local coordinate frame of the robot. To convert the position change of the robot into the global coordinate frame, we assume that the robot's motion is small in a given time step. As a result, the robot's trajectory can be approximated to be a straight path, and using trigonometry we derived the following equations to determine the change in position within a global coordinate frame, where $L$ is the radius of the robot.
 
-\subsection{Experiments Performed}
-\subsubsection{Linear Drift}
-The robot localizes itself from odometry measurements by calculating the linear
- distance travelled from its last distance.  In reality, such a calculation is 
-an approximation, subject to drift.  
-With the given instrumentation, we chose to measure the linear drift along the 
-x-axis, by measuring the robot's true x-displacement and comparing it to the 
-odometry-calculated x-displacement.  An illustration of the measurement is shown
-in figure [xxxxx].
-
-
-
-\includegraphics[width = 3.2in]{measurements.png}
-\textbf{fig 2}
-
-To characterize the Jaguar Lite's pose drift, we conducted a series 
-of measurements to compare the robot's odometry-deduced pose with its true
- pose given by its location in the global coordinate frame.  At the high level, the 
-robot, upon reset, places itself in the origin of the map.  We define the 
-robot's starting position as the origin of the true map as well, shown in figure [xxxx].
-
-
-
-\includegraphics[width = 3.2in]{origin.png}
-\textbf{fig 3}
-
-\subsubsection{Angular Drift}
-
-
 \section{Results}
-\subsection{Linear Drift}
-From three averaged datasets, we characterized the odometry sensor accuracy on 
-two environments, both grass and concrete. The graphs in figure [xxxx] and [xxxx] 
-display the \emph{True X Displacement} against the \emph{Odometry-Calculated Displacement}.
-In addition, the ideal Odometry Measurement has also been plotted for reference, 
-where we define ideal measurement to be the case where the true displacement
-and the perceived displacement match, such that the ideal slope of plotted odometry and external measurements is unity.
 
-
-\includegraphics[width = 3.25in]{grass_avg.png}
-\textbf{fig 4}
-
-
-\includegraphics[width = 3.25in]{concrete_avg.png}
-\textbf{fig 5}
-
-The linear fit for the average grass drift was $r^2 = 1.0000$, and the linear fit for 
-the average concrete drift was $r^2 = 0.9998$, indicating that a line is a good fit 
-for both datasets.  
-From both plots on the grass and the concrete forward-driving data, we can 
-see a clear deviation from the ideal odometry value of the encoders.  This 
-error is more clearly illustrated in the following graphs, which plot the error
- as a function of odometry measurement.  (Note 
-the units of the y-axis.)  
-
-
-\includegraphics[width=3.25in]{grass_error.png}
-\textbf{fig 6}
-
-
-\includegraphics[width=3.25in]{concrete_error.png}
-\textbf{fig 7}
-
-Thus, as the overall distance travelled (as recorded by the odometry) increases, 
-the overall error increases in a linear fashion. Furthermore, we can see that 
-slope of the error graph is approximately an order of magnitude smaller than that of 
-the corresponding \emph{Distance vs Odometry} plot. 
-
-
-Additionally, four trials of data were collected on a tile surface wherein the 
-Jaguar Lite travelled either forward or backward along the tile surface.  
-A linear fit of the data produced a fit value of $r^2 = 1.0000$, and the 
-results are depicted in the following graphs. 
-
-\includegraphics[width=3.25in]{tiles_average.png}
-\textbf{fig 8}
-
-
-
-\includegraphics[width=3.25in]{tiles_error.png}
-\textbf{fig 9}
-
-Thus, the Jaguar Lite also demonstrates a linear error offset from forward and 
-backward motion on tiled surfaces. An important note about this final dataset, 
-however, is that the Jaguar Lite's forward motion is determined to be 
-characteristically identical to its reverse motion. 
-
-\subsection{Angular Drift}
-  To characterize angular drift the robot rotated through several 
-iterations of angles, and both the true angle was recorded (with a 
-compass) as well as the measured angle according to the robot's odometry. The 
-results of the raw data collection are plotted below as true rotations (in 
-radians) versus rotation measurements from the wheel odometry.
-
-
-
-\includegraphics[width=3.25in]{tiles_rotation.png}
-\textbf{fig 10}
-
-
-
-\includegraphics[width=3.25in]{tiles_rotation_error.png}
-\textbf{fig 11}
 
 \section{Conclusion}
-The results of this odometry error characterization are promising for future 
-work on the Jaguar Lite robotic platform.  With additional 
-analysis (i.e: more data-collection over longer distances), we may be able 
-to throroughly characterize the drift for the robot's pose and calculate an
-error-correction function which the robot can implement to reduce 
-error from its odometry measurement. From the data collected, we can 
-indeed produce error functions from which the robot can better estimate its 
-true pose; however, more data-collection is necessary to verify the constants 
-associated with the linear fit.  Additional testing is necessary, especially for grassy terrain since data-collection was performed on the same patch of grass, 
-potentially changing the characteristics of the grass surface with each 
-measurement.
-
-
-\subsection{Linear Drift}
-We successfully characterized the odometry error of the Jaguar Lite for straight trajectors. There is a linear relationship between odometry-based localization and the actual position of the robot in the global coordinate frame. The error in the robot's \emph{[x,y]} pose estimation for three surfaces: tile, grass, and concrete ranges from eight to ten percent.
-
-\subsection{Angular Drift}
-Overall, we have concluded that for tile surfaces, error does indeed linearly increase as the number 
-of measured rotations increases.  We expect that the error can also be fitted
-with a linear function for other surfaces; however, to generate an actual function, 
-more data collection is necessary. 
-
-Furthermore, the order of magnitude over which this linear drift is linear must be
-explicitly stated to be on the order of rotations.  Thus, we cannot generalize that
-because the error behaves linearly overall for 1,2, or even 10 rotations, so too must 
-the error function be linear on the order of values less than a rotation.  While
-such a conclusion is plausible, more data is needed to verify such a result. 
 
 
 \section*{Acknowledgment}
