@@ -15,7 +15,7 @@ namespace DrRobot.JaguarControl
         public double x, y, t;
         public double x_est, y_est, t_est;
         public double desiredX, desiredY, desiredT;
-        public double closeThresh = 0.1, thetaThresh = 0.05; // "close-enough" threshold   // lab 3
+        public double closeThresh = 0.01, thetaThresh = 0.05; // "close-enough" threshold   // lab 3
 
         public double delta_x, delta_y, rho, alpha, beta;   // lab 3
         public double desiredV, desiredW;                   // lab 3
@@ -51,9 +51,9 @@ namespace DrRobot.JaguarControl
         private double angleTravelled, distanceTravelled;
         private double diffEncoderPulseL, diffEncoderPulseR;
         private double maxVelocity = 0.25;
-        private double Krho = 1.0;  //.1;//0.005;//1;                // Krho > 0 (Conditions for stability)
-        private double Kalpha = 3;  //0.0533;//2;             // Kalpha - Krho > 0
-        private double Kbeta = -3;  //-0.00333;//-0.5//-1.0;   // Kbeta < 0
+        private double Krho = 16;//4.0;   //sim: 1           //.1;//0.005;//1;                // Krho > 0 (Conditions for stability)
+        private double Kalpha = 18;//4.5; //sim: 3.0   //0.0533;//2;             // Kalpha - Krho > 0
+        private double Kbeta = -18;//-4.5; //sim: -2    //-0.00333;//-0.5//-1.0;   // Kbeta < 0
         const double alphaTrackingAccuracy = 0.10;
         const double betaTrackingAccuracy = 0.1;
         const double rhoTrackingAccuracy = 0.10;
@@ -482,8 +482,8 @@ namespace DrRobot.JaguarControl
             {
                 TimeSpan ts = DateTime.Now - startTime;
                 time = ts.TotalSeconds;
-                 String newData = time.ToString() + " " + x.ToString() + " " + y.ToString() + " " + t.ToString() +" " + rho.ToString() + " " + desiredRotRateL.ToString() + " " + desiredRotRateR.ToString() + " " + alpha.ToString() + " " + beta.ToString();
-
+                String newData = time.ToString() + " " + x.ToString() + " " + y.ToString() + " " + t.ToString();
+                // +" " + rho.ToString() + " " + desiredRotRateL.ToString() + " " + desiredRotRateR.ToString() + " " + alpha.ToString() + " " + beta.ToString();
                 logFile.WriteLine(newData);
             }
         }
@@ -541,7 +541,7 @@ namespace DrRobot.JaguarControl
             if (Math.Abs(alpha) > (Math.PI / 2))
             {
                 // recalculate alpha and desiredV to drive backwards:
-                alpha = -t + Math.Atan2(delta_y, delta_x);
+                alpha = -t + Math.Atan2(-delta_y, -delta_x);
                 // constrain calculated alpha:
                 alpha = normalizeAngle(alpha);
 
@@ -554,6 +554,9 @@ namespace DrRobot.JaguarControl
             // constraint calculated beta:
             // alpha = normalizeAngle(alpha);
             beta = normalizeAngle(beta);
+
+            //if (rho < closeThresh)
+            //    beta = 0;
 
             // state estimation eqn 2:
             desiredW = (Kalpha * alpha) + (Kbeta * beta);

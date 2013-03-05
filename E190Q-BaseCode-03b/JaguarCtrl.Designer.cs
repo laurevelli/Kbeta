@@ -1065,7 +1065,7 @@
             this.txtkP.Name = "txtkP";
             this.txtkP.Size = new System.Drawing.Size(47, 20);
             this.txtkP.TabIndex = 70;
-            this.txtkP.Text = "0";
+            this.txtkP.Text = "14";
             // 
             // txtkI    // - added input
             // 
@@ -1074,7 +1074,7 @@
             this.txtkI.Name = "txtkI";
             this.txtkI.Size = new System.Drawing.Size(47, 20);
             this.txtkI.TabIndex = 70;
-            this.txtkI.Text = "0";
+            this.txtkI.Text = "5";
             // 
             // txtkD    // - added input
             // 
@@ -1083,7 +1083,7 @@
             this.txtkD.Name = "txtkD";
             this.txtkD.Size = new System.Drawing.Size(47, 20);
             this.txtkD.TabIndex = 70;
-            this.txtkD.Text = "0";
+            this.txtkD.Text = "12";
             // 
             // JaguarCtrl
             // 
