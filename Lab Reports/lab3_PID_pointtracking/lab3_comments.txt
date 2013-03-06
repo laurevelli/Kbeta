@@ -1,0 +1,28 @@
+JOSHUA
+
+Background
+Problem Definition
+
++check for stability (constraints for krho, kalpha, kbeta)
++also apply for backwards case not within bounds of alpha**
++put in a couple sentences at the end of Motion Model section
+
+Can you also try to clarify these phrases slightly?
+
+"of the robot normal vector relative to the x axis"
+(I know what you're trying to say by robot normal, but it isn't very clear)
+
+"defines the error of the robot normal vector relative to the desired angle relative to the goal."
+(two relatives is confusing)
+
+"the angle of the goal vector relative to the horizontal"
+(which horizontal?)
+
+-----------------------------------------------------
+Lauren
+
+- Abstract
+- plot results
+- correct conclusion
+
+'drive rho alpha beta to zero'

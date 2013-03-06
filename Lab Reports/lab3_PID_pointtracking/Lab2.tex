@@ -345,7 +345,7 @@ This paper describes the implementation of point tracking for the \emph{Jaguar L
 \emph{Point Tracking} refers to a robot's ability to transition 
 from one pose to another on a known map of its environment. By modeling the 
 robot's drive train with a motion model and by incorporating odometric 
-sensor reading into this motion model, the robot can develop a trajectory 
+sensor readings into this motion model, the robot can develop a trajectory 
 between points.  In the following paper, we incorporate both a differential drive-train 
 motion model with a PID-controlled differential drive train to designate the
 Jaguar Lite robotic platform to track points on a two-dimensional environment.
@@ -359,9 +359,11 @@ onboard webcam \cite{Dr.RobotWebsite}.  With a wireless wifi interface, the
 designer can implement navigation algorithms in \emph{C\#} within Microsoft Visual Studio to communicate with the Jaguar platform. Most importantly, the platform can  be driven both 
 indoors and outdoors. 
 
-
-\includegraphics[width = 3in]{jaguarLite.png}\\
-\textbf{Figure 1. The Jaguar Lite Platform}
+\begin{figure}[h]
+\centering\includegraphics[width = 3in]{jaguarLite.png}
+\caption{The Jaguar Lite Platform}
+\label{fig1}
+\end{figure}
 
 \subsection{Terminology}
 This paper refers to specific definitions and usage of the following terms:
@@ -379,75 +381,84 @@ rotate and translate is considered a holonomic robot.
 from one pose to another on a navigable coordinate frame.
 
 \end{itemize}
-
-\section{Method}
+\section{Background}
+\section{Problem Definition}
+\section{Control Design}
 
 \subsection{Motion Model}
-Developing a method of navigating from one waypoint to another ultimately 
-simplifies to determining the appropriate motor speeds of the Jaguar Lite at any
-given point as the robot pursues a goal pose.  
+Developing a method of navigating from one pose to another simplifies to determining 
+the appropriate motor speeds of the Jaguar Lite at any given pose to form a trajectory as the robot pursues a goal pose.  
 To determine the robot's motor outputs, an effective motion model which reflects
-the robot's holonomic constraints must first be developed.  The Jaguar Lite 
-moves with a differential drive train.  For this reason, the motion model cannot 
+the robot's nonholonomic constraints must be used. 
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width =2in]{pic1.png}
+\caption{Realizable Trajectories}
+\label{fig2}
+\end{figure}
+
+The Jaguar Lite moves with a differential drive train.  For this reason, the motion model cannot 
 incorporate direct translation of the robot in a direction normal to the sides of
-the robot. Figure XXXX illustrates possible trajectories, each of which is 
-governed by the speed of the right wheel, $\omega_1$ and the left wheel, $\omega_2$.
+the robot. Figure~\ref{fig2} illustrates possible trajectories, each of which is 
+governed by the speed of the right wheel $\omega_1$ and the left wheel $\omega_2$.
 
-\includegraphics[width =2.5in]{pic1.png}
+%\includegraphics[width =2.5in]{pic1.png}
+%\textbf{Figure 2. Realizable Trajectories}
 
-\textbf{Figure 2. Realizable Trajectories}
+Given a differential drive train, we can use the following coordinate transform 
+to describe the robot's pose relative to the goal pose \cite{Textbook}:
 
-Given a differential drive train, we can have chosen the following motion model
-\cite{Textbook}:
-
-\begin{equation}
+\begin{equation} \label{eq:rho}
 \rho = \sqrt{\Delta x^2 + \Delta y^2}
 \end{equation}
-\begin{equation}
+\begin{equation} \label{eq:alpha}
 \alpha = -\theta + atan2(\Delta y, \Delta x)
 \end{equation}
-\begin{equation}
+\begin{equation} \label{eq:beta}
 \beta = -\theta -\alpha
 \end{equation}
 
-In the equations above, $x$ and $y$ define the horizontal and vertical displacements
-respectively, relative to a fixed initial coordinate frame.  $\theta$ defines the 
-angular displacement of of the robot normal vector relative to the x axis.  
-$\rho$ defines the magnitude of the displacement from the robot pose to the 
-desired pose.  $\alpha$ defines the error of the robot normal vector relative to 
+Equations (\ref{eq:rho}), (\ref{eq:alpha}), and (\ref{eq:beta}) $x$ and $y$ define the horizontal and vertical displacements
+respectively, relative to a fixed global coordinate frame.  $\theta$ defines the 
+angular displacement of the robot normal vector relative to the x axis.  
+$\rho$ defines the magnitude of the displacement from the robot's pose to the 
+goal pose.  $\alpha$ defines the error of the robot normal vector relative to 
 the desired angle relative to the goal.  $\beta$ defines the angle of the goal vector 
-relative to the horizontal.  These angles are depicted in the illustration below:
+relative to the horizontal.  The angles of the coordinate transformation are shown in Figure~\ref{fig3}. 
 
+\begin{figure}
+\centering
 \includegraphics[width = 3in]{pic2.png}
+\caption{Linear and Angular Errors}
+\label{fig3}
+\end{figure}
 
-\textbf{Figure 3. Linear and Angular Errors}
+The above equations quantify the error, or difference between the robot's pose and
+the desired pose.  By calculating the kinematics in this coordinate frame and applying the control law, equations (\ref{eq:vel}) and (\ref{eq:omega}) can be produced, which define the
+Jaguar Lite's linear velocity $v$ and angular velocity $\omega$ as a 
+function of the error values $\rho$, $\alpha$, and $\beta$.  
 
-The above equations are sufficient to determine the error in the robot's pose from 
-the desired pose, as well as the linear and angular corrections that must be made.  
-Next, by weighing the errors, two more equations can be produced, which define the
-Jaguar Lite's \emph{linear}, $v$, and \emph{angular}, $\omega$, velocities as a 
-function of the error values: $\rho$, $\alpha$, and $\beta$.  
-
-\begin{equation}
+\begin{equation}\label{eq:vel}
 v = k_{\rho} \rho
 \end{equation}
-\begin{equation}
+\begin{equation}\label{eq:omega}
 \omega = k_{\alpha} \alpha  +  k_{\beta} \beta 
 \end{equation}
-where $k_{\rho}$, $k_{\alpha}$, and $k_{\beta}$ are constants.
+where $k_{\rho}$, $k_{\alpha}$, and $k_{\beta}$ are tuned gain constants.
 
-Therefore, given that equations [4] and [5] model the Jaguar Lite's desired
- change in displacement over time, the equations below must ultimately be solely determined from
-the rotations of the left and right wheels.  Equations [6] and [7] fulfill 
+Given that equations  (\ref{eq:vel}) and (\ref{eq:omega}) model the robot's desired
+ change in displacement over time, this motion control must be achieved on the Jaguar Lite platform
+through control of the left and right wheel rotations.  Equations (\ref{eq:wheel1}) and (\ref{eq:wheel2}) fulfill 
 this requirement.
-\begin{equation}
+\begin{equation}\label{eq:wheel1}
 \omega(t) = \omega_1 + \omega_2 
 \end{equation} 
-\begin{equation}
+\begin{equation}\label{eq:wheel2}
 v(t) = L \left( \omega_1 - \omega_2 \right)
 \end{equation}
 where $L$ is the radius of the robot.
-Thus, the overall left and right angular velocities, $\omega_1$ and $\omega_2$, may 
+Thus, the overall left and right angular velocities, $\omega_1$ and $\omega_2$ respectively, may 
 be determined by combining the previous equations to produce:
 \begin{equation}
 \omega_1 = \frac{v}{2L} + \frac{\omega}{2}
@@ -464,15 +475,15 @@ sensory input from quadrature encoders.
 Overall, the point tracking trajectory becomes far more accurate in implementation
 if the left and right motor speeds are controlled with a tight control loop.
 Thus, the desired left and right motor speeds (derived from $\omega_1$ and $\omega_2$)
-can be far more closely approximated by the actual Jaguar Hardware.
-To achieve wheel-speed control, a PID controller was implemented.
+can be far more closely approximated by the actual Jaguar hardware.
+To achieve wheel-speed control, a PID controller was implemented
 to stabilize the individual wheel speeds of both motors.
 
-At the low, level the Jaguar Lite's left and right wheel motors can 
-change speed through \emph{pulse-width modulation}, and a specified 
-duty cycle.  By tuning $P$, $I$, and $D$ values, The PID controller changes the 
-duty cycle, effectively maintaining the 
-wheel speeds at speeds far closer to the desired wheel speeds.
+At the lower level the Jaguar Lite's left and right wheel motors can 
+change speed through pulse-width modulation, and a specified 
+duty cycle.  By tuning the $P$, $I$, and $D$ control gains, the controller changes the 
+duty cycle, effectively maintaining  
+wheel velocities far closer to the desired values.
 
 %% not sure if this still jives with the rest
 %Assuming the robot is travelling on a circular arc of constant radius, we can apply basic circle geometry to calculate the distance traveled $\Delta s$ and the change in orientation $\Delta\theta$ of each tread of the Jaguar Lite robot for time step $\Delta t$. These changes in displacement are within the local coordinate frame of the robot. To convert the position change of the robot into the global coordinate frame, we assume that the robot's motion is small in a given time step. As a result, the robot's trajectory can be approximated to be a straight path, and using trigonometry we derived the following equations to determine the change in position within a global coordinate frame, where $L$ is the radius of the robot.
