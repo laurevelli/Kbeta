@@ -1,18 +1,24 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2012.12.14)  5 MAR 2013 19:23
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.2.13)  5 MAR 2013 19:34
 entering extended mode
- %&-line parsing enabled.
-**Lab2.tex
-(./Lab2.tex
-LaTeX2e <2009/09/24>
-Babel <v3.8l> and hyphenation patterns for english, usenglishmax, dumylang, noh
-yphenation, farsi, arabic, croatian, bulgarian, ukrainian, russian, czech, slov
-ak, danish, dutch, finnish, french, basque, ngerman, german, german-x-2009-06-1
-9, ngerman-x-2009-06-19, ibycus, monogreek, greek, ancientgreek, hungarian, san
-skrit, italian, latin, latvian, lithuanian, mongolian2a, mongolian, bokmal, nyn
-orsk, romanian, irish, coptic, serbian, turkish, welsh, esperanto, uppersorbian
-, estonian, indonesian, interlingua, icelandic, kurmanji, slovenian, polish, po
-rtuguese, spanish, galician, catalan, swedish, ukenglish, pinyin, loaded.
-(./IEEEtran.cls
+**C:/Users/Lauren/Documents/GitHub/Kbeta/Lab*Reports/lab3_PID_pointtracking/Lab
+2.tex
+
+("C:/Users/Lauren/Documents/GitHub/Kbeta/Lab Reports/lab3_PID_pointtracking/Lab
+2.tex"
+LaTeX2e <2011/06/27>
+Babel <v3.8m> and hyphenation patterns for english, afrikaans, ancientgreek, ar
+abic, armenian, assamese, basque, bengali, bokmal, bulgarian, catalan, coptic, 
+croatian, czech, danish, dutch, esperanto, estonian, farsi, finnish, french, ga
+lician, german, german-x-2012-05-30, greek, gujarati, hindi, hungarian, iceland
+ic, indonesian, interlingua, irish, italian, kannada, kurmanji, latin, latvian,
+ lithuanian, malayalam, marathi, mongolian, mongolianlmc, monogreek, ngerman, n
+german-x-2012-05-30, nynorsk, oriya, panjabi, pinyin, polish, portuguese, roman
+ian, russian, sanskrit, serbian, slovak, slovenian, spanish, swedish, swissgerm
+an, tamil, telugu, turkish, turkmen, ukenglish, ukrainian, uppersorbian, usengl
+ishmax, welsh, loaded.
+
+("C:\Users\Lauren\Documents\GitHub\Kbeta\Lab Reports\lab3_PID_pointtracking\IEE
+Etran.cls"
 Document Class: IEEEtran 2012/11/21 V1.8c by Harald Hanche-Olsen and Anders Chr
 istensen
 -- Based on V1.7a by Michael Shell
@@ -25,7 +31,7 @@ istensen
 \@IEEEtrantmptoksA=\toks14
 LaTeX Font Info:    Try loading font information for OT1+ptm on input line 373.
 
-(/usr/share/texmf-texlive/tex/latex/psnfss/ot1ptm.fd
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\psnfss\ot1ptm.fd"
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 )
 -- Using 8.5in x 11in (letter) paper.
@@ -98,94 +104,118 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <24> not available
 \@IEEEtmpitemindent=\dimen116
 \c@IEEEbiography=\count90
 \@IEEEtranrubishbin=\box26
-) (/usr/share/texmf-texlive/tex/latex/cite/cite.sty
-LaTeX Info: Redefining \cite on input line 285.
-LaTeX Info: Redefining \nocite on input line 356.
-Package: cite 2009/08/29  v 5.2
+) ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\cite\cite.sty"
+LaTeX Info: Redefining \cite on input line 302.
+LaTeX Info: Redefining \nocite on input line 373.
+Package: cite 2010/09/10  v 5.3
 )
-(/usr/share/texmf-texlive/tex/latex/graphics/graphicx.sty
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\graphics\graphicx.sty"
 Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
 
-(/usr/share/texmf-texlive/tex/latex/graphics/keyval.sty
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\graphics\keyval.sty"
 Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
 \KV@toks@=\toks15
 )
-(/usr/share/texmf-texlive/tex/latex/graphics/graphics.sty
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\graphics\graphics.sty"
 Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
 
-(/usr/share/texmf-texlive/tex/latex/graphics/trig.sty
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\graphics\trig.sty"
 Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
 )
-(/etc/texmf/tex/latex/config/graphics.cfg
-File: graphics.cfg 2009/08/28 v1.8 graphics configuration of TeX Live
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\00miktex\graphics.cfg"
+File: graphics.cfg 2007/01/18 v1.5 graphics configuration of teTeX/TeXLive
 )
 Package graphics Info: Driver file: pdftex.def on input line 91.
 
-(/usr/share/texmf-texlive/tex/latex/pdftex-def/pdftex.def
-File: pdftex.def 2010/03/12 v0.04p Graphics/color for pdfTeX
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\pdftex-def\pdftex.def"
+File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
+
+("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\oberdiek\infwarerr.sty"
+Package: infwarerr 2010/04/08 v1.3 Providing info/warning/error messages (HO)
+)
+("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\oberdiek\ltxcmds.sty"
+Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
+)
 \Gread@gobject=\count91
 ))
 \Gin@req@height=\dimen117
 \Gin@req@width=\dimen118
 )
-(/usr/share/texmf-texlive/tex/latex/algorithm2e/algorithm2e.sty
-Package: algorithm2e 2005/10/04 v3.9 algorithms environments
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\algorithm2e\algorithm2e.sty"
+Package: algorithm2e 2013/01/06 v5.00 algorithms environments
 \c@AlgoLine=\count92
 
-(/usr/share/texmf-texlive/tex/latex/base/ifthen.sty
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\ifthen.sty"
 Package: ifthen 2001/05/26 v1.1c Standard LaTeX ifthen package (DPC)
 )
-(/usr/share/texmf-texlive/tex/latex/tools/xspace.sty
-Package: xspace 2006/05/08 v1.12 Space after command names (DPC,MH)
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\tools\xspace.sty"
+Package: xspace 2009/10/20 v1.13 Space after command names (DPC,MH)
+)
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\ltxmisc\relsize.sty"
+Package: relsize 2003/07/04 ver 3.1
 )
 ********************************************************
-Package `algorithm2e' Release 3.9 -- october 04 2005 --
+Package `algorithm2e' Release 5.0 -- january 06 2013 --
 - algorithm2e-announce@lirmm.fr mailing list for announcement about releases
 - algorithm2e-discussion@lirmm.fr mailing list for discussion about package
 subscribe by emailing sympa@lirmm.fr with 'subscribe <list> <firstname name>'
-- Author: Christophe Fiorio (fiorio@lirmm.fr)
+- Author: Christophe Fiorio (cfiorio@um2.fr)
 ********************************************************
 \skiptotal=\skip44
-\skiprule=\skip45
-\skiphlne=\skip46
-\skiptext=\skip47
-\skiplength=\skip48
-\algomargin=\skip49
-\skipalgocfslide=\skip50
+\skiplinenumber=\skip45
+\skiprule=\skip46
+\skiphlne=\skip47
+\skiptext=\skip48
+\skiplength=\skip49
+\algomargin=\skip50
+\skipalgocfslide=\skip51
 \algowidth=\dimen119
 \inoutsize=\dimen120
-\inoutline=\dimen121
+\inoutindent=\dimen121
+\interspacetitleruled=\dimen122
+\interspacealgoruled=\dimen123
+\interspacetitleboxruled=\dimen124
 \algocf@inoutbox=\box27
 \algocf@inputbox=\box28
-\AlCapSkip=\skip51
-\AlCapHSkip=\skip52
-\algocf@capbox=\box29
+\AlCapSkip=\skip52
+\AlCapHSkip=\skip53
+\algoskipindent=\skip54
+\algocf@nlbox=\box29
+\algocf@hangingbox=\box30
+\algocf@untilbox=\box31
+\algocf@skipuntil=\skip55
+\algocf@capbox=\box32
+\algoheightruledefault=\skip56
+\algoheightrule=\skip57
+\algotitleheightruledefault=\skip58
+\algotitleheightrule=\skip59
 \c@algocfline=\count93
-\c@algocf=\count94
-\algocf@algoframe=\box30
-\algocf@algobox=\box31
-) (/usr/share/texmf-texlive/tex/latex/subfigure/subfigure.sty
-Package: subfigure 2002/03/15 v2.1.5 subfigure package
-\subfigtopskip=\skip53
-\subfigcapskip=\skip54
-\subfigcaptopadj=\dimen122
-\subfigbottomskip=\skip55
-\subfigcapmargin=\dimen123
-\subfiglabelskip=\skip56
-\c@subfigure=\count95
-\c@lofdepth=\count96
-\c@subtable=\count97
-\c@lotdepth=\count98
+\c@algocfproc=\count94
+\c@algocf=\count95
+\algocf@algoframe=\box33
+\algocf@algobox=\box34
+) ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\subfigure\subfigure.sty"
+Package: subfigure 2002/07/30 v2.1.4 subfigure package
+\subfigtopskip=\skip60
+\subfigcapskip=\skip61
+\subfigcaptopadj=\dimen125
+\subfigbottomskip=\skip62
+\subfigcapmargin=\dimen126
+\subfiglabelskip=\skip63
+\c@subfigure=\count96
+\c@lofdepth=\count97
+\c@subtable=\count98
+\c@lotdepth=\count99
 
 ****************************************
 * Local config file subfigure.cfg used *
 ****************************************
-(/usr/share/texmf-texlive/tex/latex/subfigure/subfigure.cfg)
-\subfig@top=\skip57
-\subfig@bottom=\skip58
-) (./Lab2.aux)
-\openout1 = `Lab2.aux'.
-
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\subfigure\subfigure.cfg")
+\subfig@top=\skip64
+\subfig@bottom=\skip65
+)
+("C:\Users\Lauren\Documents\GitHub\Kbeta\Lab Reports\lab3_PID_pointtracking\Lab
+2.aux")
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 317.
 LaTeX Font Info:    ... okay on input line 317.
 LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 317.
@@ -198,18 +228,18 @@ LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 317.
 LaTeX Font Info:    ... okay on input line 317.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 317.
 LaTeX Font Info:    ... okay on input line 317.
-
-(/usr/share/texmf-texlive/tex/context/base/supp-pdf.mkii
+ ("C:\Program Files (x86)\MiKTeX 2.9\tex\context\base\supp-pdf.mkii"
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count99
-\scratchdimen=\dimen124
-\scratchbox=\box32
-\nofMPsegments=\count100
-\nofMParguments=\count101
+\scratchcounter=\count100
+\scratchdimen=\dimen127
+\scratchbox=\box35
+\nofMPsegments=\count101
+\nofMParguments=\count102
 \everyMPshowfont=\toks16
-\MPscratchCnt=\count102
-\MPscratchDim=\dimen125
-\MPnumerator=\count103
+\MPscratchCnt=\count103
+\MPscratchDim=\dimen128
+\MPnumerator=\count104
+\makeMPintoPDFobject=\count105
 \everyMPtoPDFconversion=\toks17
 )
 Underfull \hbox (badness 10000) in paragraph at lines 337--339
@@ -223,24 +253,40 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 <jaguarLite.png, id=1, 3276.24pt x 1846.9pt>
 File: jaguarLite.png Graphic file (type png)
  <use jaguarLite.png>
+Package pdftex.def Info: jaguarLite.png used on input line 364.
+(pdftex.def)             Requested size: 216.81pt x 122.19449pt.
+
 <pic1.png, id=2, 677.53125pt x 689.57625pt>
 File: pic1.png Graphic file (type png)
  <use pic1.png>
+Package pdftex.def Info: pic1.png used on input line 407.
+(pdftex.def)             Requested size: 144.54pt x 147.10909pt.
+
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}
+[1{C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map}
 
 
- <./jaguarLite.png (PNG copy)>] <pic2.png, id=16, 752.8125pt x 650.43pt>
+ <C:/Users/Lauren/Documents/GitHub/Kbeta/Lab Reports/lab3_PID_pointtracking/jag
+uarLite.png>]
+<pic2.png, id=16, 752.8125pt x 650.43pt>
 File: pic2.png Graphic file (type png)
  <use pic2.png>
+Package pdftex.def Info: pic2.png used on input line 452.
+(pdftex.def)             Requested size: 216.81pt x 187.31972pt.
+
 <trajectory.jpg, id=17, 866.23625pt x 638.385pt>
 File: trajectory.jpg Graphic file (type jpg)
- <use trajectory.jpg> [2 <./pic1.png> <./pic2.png>]
+ <use trajectory.jpg>
+Package pdftex.def Info: trajectory.jpg used on input line 522.
+(pdftex.def)             Requested size: 252.94499pt x 186.4127pt.
+ [2 <C:/Users/Lauren/Documents/GitHub/Kbeta/Lab Reports/lab3_PID_pointtracking/
+pic1.png> <C:/Users/Lauren/Documents/GitHub/Kbeta/Lab Reports/lab3_PID_pointtra
+cking/pic2.png>]
 LaTeX Font Info:    Try loading font information for OT1+pcr on input line 581.
 
- (/usr/share/texmf-texlive/tex/latex/psnfss/ot1pcr.fd
+ ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\psnfss\ot1pcr.fd"
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 )
 
@@ -254,27 +300,32 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[3 <./trajectory.jpg>] (./Lab2.aux) ) 
+[3 <C:/Users/Lauren/Documents/GitHub/Kbeta/Lab Reports/lab3_PID_pointtracking/t
+rajectory.jpg>]
+("C:\Users\Lauren\Documents\GitHub\Kbeta\Lab Reports\lab3_PID_pointtracking\Lab
+2.aux") ) 
 Here is how much of TeX's memory you used:
- 2919 strings out of 493848
- 41530 string characters out of 1152822
- 122711 words of memory out of 3000000
- 6207 multiletter control sequences out of 15000+50000
+ 3521 strings out of 493921
+ 52690 string characters out of 3144873
+ 131230 words of memory out of 3000000
+ 6817 multiletter control sequences out of 15000+200000
  35765 words of font info for 66 fonts, out of 3000000 for 9000
- 717 hyphenation exceptions out of 8191
- 26i,6n,24p,743b,297s stack positions out of 5000i,500n,10000p,200000b,50000s
-{/usr/share/texmf-texlive/fonts/enc/dvips/
-base/8r.enc}</usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmex10.pfb
-></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/shar
-e/texmf-texlive/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texmf-texl
-ive/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-texlive/fonts/ty
-pe1/public/amsfonts/cm/cmr7.pfb></usr/share/texmf-texlive/fonts/type1/public/am
-sfonts/cm/cmsy10.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/c
-msy7.pfb></usr/share/texmf-texlive/fonts/type1/urw/courier/ucrr8a.pfb></usr/sha
-re/texmf-texlive/fonts/type1/urw/times/utmb8a.pfb></usr/share/texmf-texlive/fon
-ts/type1/urw/times/utmbi8a.pfb></usr/share/texmf-texlive/fonts/type1/urw/times/
-utmr8a.pfb></usr/share/texmf-texlive/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Lab2.pdf (3 pages, 6647858 bytes).
+ 844 hyphenation exceptions out of 8191
+ 27i,6n,24p,818b,297s stack positions out of 5000i,500n,10000p,200000b,50000s
+{C:/Program Files (x86)/MiKTeX 2.9/fonts/enc/dvips/fontname/8r.enc}<C:
+/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/P
+rogram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Pro
+gram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Progra
+m Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program F
+iles (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Program Files
+ (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files (
+x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Program Files (x86
+)/MiKTeX 2.9/fonts/type1/urw/courier/ucrr8a.pfb><C:/Program Files (x86)/MiKTeX 
+2.9/fonts/type1/urw/times/utmb8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/t
+ype1/urw/times/utmbi8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/urw/t
+imes/utmr8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/urw/times/utmri8
+a.pfb>
+Output written on Lab2.pdf (3 pages, 10525893 bytes).
 PDF statistics:
  68 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
