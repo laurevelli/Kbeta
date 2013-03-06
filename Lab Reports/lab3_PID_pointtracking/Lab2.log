@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.2.13)  5 MAR 2013 18:58
-=======
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2012.12.14)  5 MAR 2013 18:17
->>>>>>> 277365c1e6012f6010bac74c349607a74986c9cc
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2012.12.14)  5 MAR 2013 19:23
 entering extended mode
  %&-line parsing enabled.
 **Lab2.tex
@@ -235,36 +231,16 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}
 
-<<<<<<< HEAD
- <C:/Users/Lauren/Documents/GitHub/Kbeta/Lab Reports/lab3_PID_pointtracking/jag
-uarLite.png> <C:/Users/Lauren/Documents/GitHub/Kbeta/Lab Reports/lab3_PID_point
-tracking/pic1.png>]
-<pic2.png, id=17, 752.8125pt x 650.43pt>
-File: pic2.png Graphic file (type png)
- <use pic2.png>
-Package pdftex.def Info: pic2.png used on input line 432.
-(pdftex.def)             Requested size: 216.81pt x 187.31972pt.
-
-<trajectory.jpg, id=18, 866.23625pt x 638.385pt>
-File: trajectory.jpg Graphic file (type jpg)
- <use trajectory.jpg>
-Package pdftex.def Info: trajectory.jpg used on input line 502.
-(pdftex.def)             Requested size: 252.94499pt x 186.4127pt.
- [2 <C:/Users/Lauren/Documents/GitHub/Kbeta/Lab Reports/lab3_PID_pointtracking/
-pic2.png> <C:/Users/Lauren/Documents/GitHub/Kbeta/Lab Reports/lab3_PID_pointtra
-cking/trajectory.jpg>]
-LaTeX Font Info:    Try loading font information for OT1+pcr on input line 561.
-
- ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\psnfss\ot1pcr.fd"
-=======
 
  <./jaguarLite.png (PNG copy)>] <pic2.png, id=16, 752.8125pt x 650.43pt>
 File: pic2.png Graphic file (type png)
- <use pic2.png> [2 <./pic1.png> <./pic2.png>]
-LaTeX Font Info:    Try loading font information for OT1+pcr on input line 563.
+ <use pic2.png>
+<trajectory.jpg, id=17, 866.23625pt x 638.385pt>
+File: trajectory.jpg Graphic file (type jpg)
+ <use trajectory.jpg> [2 <./pic1.png> <./pic2.png>]
+LaTeX Font Info:    Try loading font information for OT1+pcr on input line 581.
 
  (/usr/share/texmf-texlive/tex/latex/psnfss/ot1pcr.fd
->>>>>>> 277365c1e6012f6010bac74c349607a74986c9cc
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 )
 
@@ -278,53 +254,27 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[3
-
-] (./Lab2.aux) ) 
+[3 <./trajectory.jpg>] (./Lab2.aux) ) 
 Here is how much of TeX's memory you used:
-<<<<<<< HEAD
- 3521 strings out of 493921
- 52690 string characters out of 3144873
- 131230 words of memory out of 3000000
- 6817 multiletter control sequences out of 15000+200000
- 35765 words of font info for 66 fonts, out of 3000000 for 9000
- 844 hyphenation exceptions out of 8191
- 27i,6n,24p,818b,297s stack positions out of 5000i,500n,10000p,200000b,50000s
-{C:/Program Files (x86)/MiKTeX 2.9/fonts/enc/dvips/fontname/8r.enc}<C:
-/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/P
-rogram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Pro
-gram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Progra
-m Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program F
-iles (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Program Files
- (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files (
-x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Program Files (x86
-)/MiKTeX 2.9/fonts/type1/urw/courier/ucrr8a.pfb><C:/Program Files (x86)/MiKTeX 
-2.9/fonts/type1/urw/times/utmb8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/t
-ype1/urw/times/utmbi8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/urw/t
-imes/utmr8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/urw/times/utmri8
-a.pfb>
-Output written on Lab2.pdf (3 pages, 10524790 bytes).
-=======
- 2912 strings out of 493848
- 41431 string characters out of 1152822
- 122703 words of memory out of 3000000
- 6202 multiletter control sequences out of 15000+50000
+ 2919 strings out of 493848
+ 41530 string characters out of 1152822
+ 122711 words of memory out of 3000000
+ 6207 multiletter control sequences out of 15000+50000
  35765 words of font info for 66 fonts, out of 3000000 for 9000
  717 hyphenation exceptions out of 8191
  26i,6n,24p,743b,297s stack positions out of 5000i,500n,10000p,200000b,50000s
-{/usr/share/texmf-texlive/fonts/enc/dvips/base/8r.enc}</usr/sha
-re/texmf-texlive/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texmf-te
-xlive/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texmf-texlive/fonts
-/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texmf-texlive/fonts/type1/publi
-c/amsfonts/cm/cmr10.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/c
-m/cmr7.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-</usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/
-texmf-texlive/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texmf-texlive/font
-s/type1/urw/times/utmb8a.pfb></usr/share/texmf-texlive/fonts/type1/urw/times/ut
-mbi8a.pfb></usr/share/texmf-texlive/fonts/type1/urw/times/utmr8a.pfb></usr/shar
-e/texmf-texlive/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Lab2.pdf (3 pages, 6616678 bytes).
->>>>>>> 277365c1e6012f6010bac74c349607a74986c9cc
+{/usr/share/texmf-texlive/fonts/enc/dvips/
+base/8r.enc}</usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmex10.pfb
+></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/shar
+e/texmf-texlive/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texmf-texl
+ive/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-texlive/fonts/ty
+pe1/public/amsfonts/cm/cmr7.pfb></usr/share/texmf-texlive/fonts/type1/public/am
+sfonts/cm/cmsy10.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/c
+msy7.pfb></usr/share/texmf-texlive/fonts/type1/urw/courier/ucrr8a.pfb></usr/sha
+re/texmf-texlive/fonts/type1/urw/times/utmb8a.pfb></usr/share/texmf-texlive/fon
+ts/type1/urw/times/utmbi8a.pfb></usr/share/texmf-texlive/fonts/type1/urw/times/
+utmr8a.pfb></usr/share/texmf-texlive/fonts/type1/urw/times/utmri8a.pfb>
+Output written on Lab2.pdf (3 pages, 6647858 bytes).
 PDF statistics:
  68 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
