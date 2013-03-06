@@ -338,7 +338,7 @@ Email: jvasquez@g.hmc.edu}
 \IEEEpeerreviewmaketitle
 
 \begin{abstract}
-This paper describes the implementation of point tracking for the \emph{Jaguar Lite Mobile Robot Platform}. Motion control of the autonomous vehicle is achieved using a Proportional-Integral-Derivative controller. In both simulation and hardware mode, the control law parameters and control gains have been tuned to demonstrate stable, precise motion towards desired goal states.
+This paper describes the implementation of point tracking for the \emph{Jaguar Lite Mobile Robot Platform}. Motion control of the autonomous vehicle is achieved using a Proportional-Integral-Derivative controller. In both simulation and hardware mode, the control law parameters and control gains have been tuned to demonstrate stable, precise motion towards desired goal poses.
 \end{abstract} 
 
 \section{Introduction}
@@ -490,19 +490,32 @@ wheel velocities far closer to the desired values.
 
 \section{Results}
 
-Overall, after tuning the three constants $K_{\rho}$ $K_{\alpha}$, and $K_{\beta}$ 
-that govern the error influence on the desired correction speed and after tuning
-the three ($P$, $I$, $D$) constants of the motor velocity controller, the robot does indeed 
-traverse successfully from an initial point to an end point visually within range of the 
-actual desired final point.  
+The three control gains $K_{\rho}$ $K_{\alpha}$, and $K_{\beta}$ weight the influence 
+of each error parameter, iterating through time to measure the displacement of the robot
+relative to the goal pose. By tuning these parameters both in simulation and hardware modes, 
+the desired correction velocities were achieved. In simulation, the tuned parameter values are 
+$K_{\rho} = 1$ $K_{\alpha} =  3$, and $K_{\beta} = -2$ while in hardware the optimal values 
+are $K_{\rho} = 4$ $K_{\alpha} =  4.5$, and $K_{\beta} = -4.5$.
 
-The presented model above, however, does not encompass all cases of possible robot 
-locomotion.  In particular, the motion model does not account for spinning the robot about
-its center of mass.  This occurence arises when the robot begins at the [$x$,$y$] location 
-of its goal pose, but is oriented in a different angle than the desired angle.  Given the 
+\begin{figure}[b]
+\centering
+\includegraphics[width = 3.5in]{trajectory.jpg}
+\caption{Simulated robot trajectory (blue, dashed) and actual Jaguar Lite trajectory (black) with final poses (red).}
+\label{fig4}
+\end{figure}
+
+For experimental testing, tuning the three $P$, $I$, $D$
+controller constants of the motor velocity controller also guided the Jaguar Lite to its goal pose. 
+With the tuned control gains $P = 14$, $I = 5$ and $D = 12$ the robot successfully traverses from an initial pose at the origin to a goal pose within range of the 
+actual desired final point. The trajectory of the robot in simulation and hardware is shown in Figure ~\ref{fig4}.
+
+The presented motion model and control law does not encompass all cases of possible robot 
+locomotion. In particular, this control design does not account for spinning the robot in place at a 
+given pose when $x$ and $y$ remain fixed.  This arises when the robot is already at the location 
+of its goal pose, such that $\rho$ is zero, but its orientation $\theta$ is different angle than the desired angle.  Given the 
 Jaguar Lite's ability to spin in place, this possibile method of movement is not encompassed by equations
-[1], [2], and [3].  
-However, by removing the $\alpha$ term in equation [2], corrected desired velocities 
+ (\ref{eq:rho}), (\ref{eq:alpha}), and (\ref{eq:beta}).  
+However, by removing the $\alpha$ term in equation (\ref{eq:alpha}), corrected desired velocities 
 can be written as follows:
 \begin{equation} 
 v = 0
@@ -511,28 +524,33 @@ v = 0
 \omega = K_{\beta} \beta 
 \end{equation}
 
-Thus, redefining $v$ and $\omega$ when $\rho$ is sufficiently small, allows the Jaguar Lite to rotate 
-in place.
+Thus, redefining $v$ and $\omega$ when $\rho$ is sufficiently small allows the robot to rotate 
+in place. The hardware implementation of this type of locomotion is limited depending on the 
+terrain, however, simulation testing of this control design was successful.
 
 
 \section{Conclusion}
-By combining a motion model with odometric sensor readings, the Jaguar 
-Lite can effectively transition from one pose to another.
+By implementing this control design and combining this with odometry-based localization, the Jaguar 
+Lite can effectively traverse from one pose to a set goal pose.
 Furthermore, by simplifing trajectories into a series of desired poses,
-Point Tracking presents a powerful solution to generating trajectories 
+point tracking presents a powerful solution to generating trajectories 
 for the robot to follow.  Thus, the initial development of a motion model
-can effectively lead to the implementation of obstacle avoidance and 
-tracking of waypoints on a known map.
+can effectively lead to the implementation of obstacle avoidance, 
+tracking of waypoints and continuous path following on a known map.
+
+Future work 
+includes extending and applying point tracking capabilities to track 
+straight and curved trajectories, and also incorporating odometry error 
+characterization to correct for the drift identified in the Jaguar Lite encoder hardware.
 
 
 \section*{Acknowledgment}
 
 
 The authors would like to thank Professor Christopher Clark for 
-establishing a software framework on which we can 
-develop our algorithms, as well as fellow collaborators Taylor Peterson, Hannah
-Kastein, Samuel Yim, and Benjamin Chasnov for their mutual effort collecting
-additional data.
+establishing a software framework for algorithm development and
+ providing hardware resources from the Lab for Autonomous and
+ Intelligent Robotics.
 
 
 
