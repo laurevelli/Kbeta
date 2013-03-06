@@ -71,10 +71,10 @@ namespace DrRobot.JaguarControl
             mapSegmentCorners[6, 1, 0] = 3.55 / 2 + 3.05;
             mapSegmentCorners[6, 1, 1] = -2.74;
 
-            mapSegmentCorners[7, 0, 0] = 5.03 / 2;
-            mapSegmentCorners[7, 0, 1] = -2.74 - 2.31;
-            mapSegmentCorners[7, 1, 0] = -5.03/2;
-            mapSegmentCorners[7, 1, 1] = -2.74 - 2.31;
+            mapSegmentCorners[7, 0, 0] = 5.03 / 2;      // x1
+            mapSegmentCorners[7, 0, 1] = -2.74 - 2.31;  // y1
+            mapSegmentCorners[7, 1, 0] = -5.03/2;       // x2
+            mapSegmentCorners[7, 1, 1] = -2.74 - 2.31;  // y2
             // ****************** Additional Student Code: End   ************
 
 
@@ -116,6 +116,16 @@ namespace DrRobot.JaguarControl
 
 
 	        // ****************** Additional Student Code: Start ************
+            // create a line that models the robot's pose:
+            double slopeRobot = Math.Tan(t);
+            double yInterceptRobot = y - (slopeRobot * x);
+
+            // First check if both slopes are equal:
+            if (slopeRobot == slopes[segment])      // this might not work... /* FIXME */
+                return dist;    // a really big distance
+            
+            //double 
+
 
 	        
 
@@ -165,7 +175,8 @@ namespace DrRobot.JaguarControl
         double GetWallDistance(double x, double y, int segment, double tol, double n2x, double n2y){
 
 
-	        return dist;
+//	        return dist;
+            return 0;
         }
 
 
