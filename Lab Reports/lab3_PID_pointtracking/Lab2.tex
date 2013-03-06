@@ -360,10 +360,22 @@ designer can implement navigation algorithms in \emph{C\#} within Microsoft Visu
 indoors and outdoors. 
 
 \begin{figure}[h]
-\centering\includegraphics[width = 3in]{jaguarLite.png}
+\centering
+\includegraphics[width = 3in]{jaguarLite.png}
 \caption{The Jaguar Lite Platform}
 \label{fig1}
 \end{figure}
+
+\section{Background}
+\emph{Motion planning} is a well-known problem for
+nearly every autonomous robot.  For every new manner of locomotion created 
+for an autonomous platform, a new motion model must be created such that 
+the robot can autonomously traverse from one pose to another.   
+However, several existing motion models already exist for well-know 
+drivetrains.  The Jaguar Lite features a differential drivetrain for 
+which the motion model is well known. In the \emph{Motion Model} section,
+the implementation of this model on the Jaguar Lite will be fully
+discussed.    
 
 \subsection{Terminology}
 This paper refers to specific definitions and usage of the following terms:
@@ -381,11 +393,10 @@ rotate and translate is considered a holonomic robot.
 from one pose to another on a navigable coordinate frame.
 
 \end{itemize}
-\section{Background}
 \section{Problem Definition}
-\section{Control Design}
+The following section discusses the application of the differential drivetrain 
+motion model to the Jaguar Lite platform.   
 
-\subsection{Motion Model}
 Developing a method of navigating from one pose to another simplifies to determining 
 the appropriate motor speeds of the Jaguar Lite at any given pose to form a trajectory as the robot pursues a goal pose.  
 To determine the robot's motor outputs, an effective motion model which reflects
@@ -400,12 +411,21 @@ the robot's nonholonomic constraints must be used.
 
 The Jaguar Lite moves with a differential drive train.  For this reason, the motion model cannot 
 incorporate direct translation of the robot in a direction normal to the sides of
-the robot. Figure~\ref{fig2} illustrates possible trajectories, each of which is 
+the robot. Furthermore, for the purposes of simplification and negligence of excessive mechanics, 
+the Jaguar Lite's left and right treads have been replaced by wheels. The 
+resulting approximation is still valid under the proposed motion model; however, 
+the overall performance of the robot will have a larger error because of the
+dynamic friction of the ends of the slipping treads.  This error can be 
+accounted for by characterizing the error of the Jaguar Lite's odometry
+with respect to its angular rotation, $\omega$.
+Figure~\ref{fig2} illustrates possible trajectories, each of which is 
 governed by the speed of the right wheel $\omega_1$ and the left wheel $\omega_2$.
+
 
 %\includegraphics[width =2.5in]{pic1.png}
 %\textbf{Figure 2. Realizable Trajectories}
 
+\section{Motion Model}
 Given a differential drive train, we can use the following coordinate transform 
 to describe the robot's pose relative to the goal pose \cite{Textbook}:
 
