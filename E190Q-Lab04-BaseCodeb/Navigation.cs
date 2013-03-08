@@ -762,7 +762,8 @@ namespace DrRobot.JaguarControl
         {
             double weight;
             
-            for (int i = 0; i < LaserData.Length; i++) 
+            for (int i = 0; i < LaserData.Length; i++){
+                LaserData[i]
 
 	        // ****************** Additional Student Code: Start ************
 
