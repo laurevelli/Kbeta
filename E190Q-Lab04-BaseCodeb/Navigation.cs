@@ -242,7 +242,7 @@ namespace DrRobot.JaguarControl
                 
 
                 // Estimate the global state of the robot -x_est, y_est, t_est (lab 4)
-                //LocalizeEstWithParticleFilter();
+                LocalizeEstWithParticleFilter();
 
 
                 // If using the point tracker, call the function
@@ -258,7 +258,7 @@ namespace DrRobot.JaguarControl
                     }
 
                     // Drive the robot to a desired Point (lab 3)
-                    // FlyToSetPoint();
+                    FlyToSetPoint();
 
                     // Follow the trajectory instead of a desired point (lab 3)
                     // TrackTrajectory();
@@ -374,6 +374,8 @@ namespace DrRobot.JaguarControl
                 jaguarControl.simulatedJaguar.UpdateSensors(deltaT);
 
                 // Get most recent encoder measurements
+                lastEncoderPulseL = currentEncoderPulseL;
+                lastEncoderPulseR = currentEncoderPulseR;
                 currentEncoderPulseL = simulatedJaguar.GetEncoderPulse4();
                 currentEncoderPulseR = simulatedJaguar.GetEncoderPulse5();
 
@@ -401,6 +403,8 @@ namespace DrRobot.JaguarControl
                     currentAccel_z = jaguarControl.getAccel_z();
                    
                     // Update Encoder Measurements
+                    lastEncoderPulseL = currentEncoderPulseL;
+                    lastEncoderPulseR = currentEncoderPulseR;
                     currentEncoderPulseL = jaguarControl.realJaguar.GetEncoderPulse4();
                     currentEncoderPulseR = jaguarControl.realJaguar.GetEncoderPulse5();
 
