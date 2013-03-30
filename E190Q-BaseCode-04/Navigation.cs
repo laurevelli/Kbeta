@@ -15,14 +15,10 @@ namespace DrRobot.JaguarControl
         public double x, y, t;
         public double x_est, y_est, t_est;
         public double desiredX, desiredY, desiredT;
-
         public double closeThresh = 0.01, thetaThresh = 0.05; // "close-enough" threshold   // lab 3
+
         public double delta_x, delta_y, rho, alpha, beta;   // lab 3
         public double desiredV, desiredW;                   // lab 3
-        public double sonarRadius;  /* FIXME */
-        public double IRRadius;     /* FIXME */
-        public double laserMin;     /* ADDME */
-        public double laserMax;     /* ADDME */
 
         public double currentEncoderPulseL, currentEncoderPulseR;
         public double lastEncoderPulseL, lastEncoderPulseR;
@@ -55,28 +51,24 @@ namespace DrRobot.JaguarControl
         private double angleTravelled, distanceTravelled;
         private double diffEncoderPulseL, diffEncoderPulseR;
         private double maxVelocity = 0.25;
-        private double Krho = 16;//4.0;   //sim: 1         // Krho > 0 (Conditions for stability)
-        private double Kalpha = 18;//4.5; //sim: 3.0       // Kalpha - Krho > 0
-        private double Kbeta = -18;//-4.5; //sim: -2       // Kbeta < 0
+        private double Krho = 16;//4.0;   //sim: 1           //.1;//0.005;//1;                // Krho > 0 (Conditions for stability)
+        private double Kalpha = 18;//4.5; //sim: 3.0   //0.0533;//2;             // Kalpha - Krho > 0
+        private double Kbeta = -18;//-4.5; //sim: -2    //-0.00333;//-0.5//-1.0;   // Kbeta < 0
         const double alphaTrackingAccuracy = 0.10;
         const double betaTrackingAccuracy = 0.1;
-        const double phoTrackingAccuracy = 0.10;
+        const double rhoTrackingAccuracy = 0.10;
         double time = 0;
         DateTime startTime;
 
-        public double K_P = 14;//15; // lab 3
-        public double K_I = 5;//0;   // lab 3
-        public double K_D = 12;//3;   // lab 3
-
-        public short frictionComp = 8750;//8750;
+        public double K_P = 15;//15;    // lab 3
+        public double K_I = 0;//0;      // lab 3
+        public double K_D = 3;//3;      // lab 3
+        public short frictionComp = 8750;
         public double e_sum_R, e_sum_L;
         public double u_R = 0;
         public double u_L = 0;
         public double e_R = 0;
         public double e_L = 0;
-
-        public double rotRateL, rotRateR;
-        // public double K_p, K_i, K_d, maxErr;
 
         public double accCalib_x = 18;
         public double accCalib_y = 4;
@@ -86,31 +78,6 @@ namespace DrRobot.JaguarControl
         const short simMaxTickSpeed = 125;   // lab 3
         // max speed 0.25 [m/s] = 85; same calculation as above
         const int realMaxTickSpeed = 30000;
-
-        // PF Variables
-        public Map map;
-        public Particle[] particles;
-        public Particle[] propagatedParticles;
-        public int numParticles = 1000;
-        public double K_wheelRandomness = 0.15;//0.25
-        public Random random = new Random();
-        public bool newLaserData = false;
-        public double laserMaxRange = 4.0;
-        public double laserMinRange = 0.2;
-        public double[] laserAngles;
-        private int laserCounter;
-        private int laserStepSize = 3;
-        public double sigma = 0.002;  // estimated std for laser data (amped up)
-
-        public class Particle
-        {
-            public double x, y, t, w;
-
-            public Particle()
-            {
-
-            }
-        }
 
         #endregion
 
@@ -124,17 +91,6 @@ namespace DrRobot.JaguarControl
             jaguarControl = jc;
             realJaguar = jc.realJaguar;
             simulatedJaguar = jc.simulatedJaguar;
-            map = new Map();
-            particles = new Particle[numParticles];
-            propagatedParticles = new Particle[numParticles];
-
-            // Create particles
-            for (int i = 0; i < numParticles; i++)
-            {
-                particles[i] = new Particle();
-                propagatedParticles[i] = new Particle();
-            }
-
             this.Initialize();
 
 
@@ -172,8 +128,7 @@ namespace DrRobot.JaguarControl
             loggingOn = false;
 
             // Set random start for particles
-            // jaguarControl.startMode = jaguarControl.KNOWN;   // Note: GUI checkbox initializes to KNOWN
-            InitializeParticles();
+            //InitializeParticles();
 
             // Set default to no motionPlanRequired
             motionPlanRequired = false;
@@ -183,11 +138,6 @@ namespace DrRobot.JaguarControl
             displayParticles = true;
             displayNodes = true;
             displaySimRobot = true;
-
-            laserAngles = new double[LaserData.Length];
-            for (int i = 0; i < LaserData.Length; i++)                
-                laserAngles[i] = DrRobot.JaguarControl.JaguarCtrl.startAng + DrRobot.JaguarControl.JaguarCtrl.stepAng * i;
-
         }
 
         // This function is called from the dialogue window "Reset Button"
@@ -242,7 +192,7 @@ namespace DrRobot.JaguarControl
                 
 
                 // Estimate the global state of the robot -x_est, y_est, t_est (lab 4)
-                //LocalizeEstWithParticleFilter();
+                LocalizeEstWithParticleFilter();
 
 
                 // If using the point tracker, call the function
@@ -257,17 +207,21 @@ namespace DrRobot.JaguarControl
                         motionPlanRequired = false;
                     }
 
+                    // Drive the robot to 1meter from the wall. Otherwise, comment it out after lab 1. 
+                    //WallPositioning();
+
                     // Drive the robot to a desired Point (lab 3)
-                    // FlyToSetPoint();
+                    FlyToSetPoint();
 
                     // Follow the trajectory instead of a desired point (lab 3)
-                    // TrackTrajectory();
+                    //TrackTrajectory();
 
                     // Actuate motors based actuateMotorL and actuateMotorR
                     if (jaguarControl.Simulating())
                     {
                         CalcSimulatedMotorSignals();
                         ActuateMotorsWithVelControl();
+
                     }
                     else 
                     {
@@ -289,7 +243,9 @@ namespace DrRobot.JaguarControl
                 LogData();
 
                 // Sleep to approximate 20 Hz update rate
-                Thread.Sleep(deltaT); //not sure if this works anymore..... -wf
+                Thread.Sleep(deltaT);
+                // Thread.Sleep(500);
+
             }
         }
 
@@ -365,7 +321,7 @@ namespace DrRobot.JaguarControl
 
         // At every iteration of the control loop, this function will make 
         // sure all the sensor measurements are up to date before
-        // making control decisions.
+        // makeing control decisions.
         public void UpdateSensorMeasurements()
         {
             // For simulations, update the simulated measurements
@@ -373,25 +329,16 @@ namespace DrRobot.JaguarControl
             {
                 jaguarControl.simulatedJaguar.UpdateSensors(deltaT);
 
-                // Get most recent encoder measurements
+                // Get most recenct encoder measurements
+                lastEncoderPulseL = currentEncoderPulseL;
+                lastEncoderPulseR = currentEncoderPulseR;
                 currentEncoderPulseL = simulatedJaguar.GetEncoderPulse4();
                 currentEncoderPulseR = simulatedJaguar.GetEncoderPulse5();
-
-                // Get most recent laser scanner measurements
-                laserCounter = laserCounter + deltaT;
-                if (laserCounter >= 2000)
-                {
-                    for (int i = 0; i < LaserData.Length; i=i+laserStepSize)
-                    {
-                        LaserData[i] = (long)(1000 * map.GetClosestWallDistance(x, y, t -1.57 + laserAngles[i]));
-                    }
-                    laserCounter = 0;
-                    newLaserData = true;
-                }
+                
             }
             else
             {
-                // Get most recent encoder measurements
+                // Get most recenct encoder measurements
                 try
                 {
 
@@ -401,6 +348,8 @@ namespace DrRobot.JaguarControl
                     currentAccel_z = jaguarControl.getAccel_z();
                    
                     // Update Encoder Measurements
+                    lastEncoderPulseL = currentEncoderPulseL;
+                    lastEncoderPulseR = currentEncoderPulseR;
                     currentEncoderPulseL = jaguarControl.realJaguar.GetEncoderPulse4();
                     currentEncoderPulseR = jaguarControl.realJaguar.GetEncoderPulse5();
 
@@ -415,7 +364,6 @@ namespace DrRobot.JaguarControl
         // the PWM signal for corresponding desired wheel speeds
         public void CalcSimulatedMotorSignals()
         {
-
             // Cap off maximum motor signals if input speed exceeds 0.25 [m/s]:
             if ((Math.Abs(desiredRotRateL) > simMaxTickSpeed) && (Math.Abs(desiredRotRateL) > Math.Abs(desiredRotRateR)))
             {
@@ -433,20 +381,25 @@ namespace DrRobot.JaguarControl
             motorSignalR = (short)(desiredRotRateR);
 
         }
+
         public void CalcMotorSignals()
         {
             short zeroOutput = 16383;
             short maxPosOutput = 32767;
 
             // We will use the desiredRotRateRs to set our PWM signals
-            int cur_e_R = (int)((double)desiredRotRateR - (diffEncoderPulseR / deltaT));   // [pulses/second]
-            int cur_e_L = (int)((double)desiredRotRateL - (diffEncoderPulseL / deltaT));
-            int e_dir_R = (int)((cur_e_R - e_R) / deltaT);
-            int e_dir_L = (int)((cur_e_L - e_L) / deltaT);
+            int cur_e_R = (int)((double) desiredRotRateR - (diffEncoderPulseR / deltaT));   // [pulses/second]
+            int cur_e_L = (int)((double) desiredRotRateL - (diffEncoderPulseL / deltaT));
+            int e_dir_R = (int)((cur_e_R - e_R)/deltaT);
+            int e_dir_L = (int)((cur_e_L - e_L)/deltaT);
             e_R = cur_e_R;
             e_L = cur_e_L;
 
             int maxErr = (int)(3000 / deltaT);
+
+            //double K_p = 0.1;//1
+            //double K_i = 12; // deltaT;//20
+            //double K_d = 100.1;
 
             Krho = 1.0;             // Krho > 0 (Conditions for stability)
             Kalpha = 3;//4          // Kalpha - Krho > 0
@@ -470,6 +423,7 @@ namespace DrRobot.JaguarControl
         // the width of a pulse for PWM control to the robot motors
         public void ActuateMotorsWithPWMControl()
         { 
+            // pwm method accepts motor signal inputs from 0 to 32767:
             if (jaguarControl.Simulating())
                 simulatedJaguar.DcMotorPwmNonTimeCtrAll(0, 0, 0, motorSignalL, motorSignalR, 0);
             else
@@ -485,7 +439,13 @@ namespace DrRobot.JaguarControl
             if (jaguarControl.Simulating())
                 simulatedJaguar.DcMotorVelocityNonTimeCtrAll(0, 0, 0, motorSignalL, (short)(-motorSignalR), 0);
             else
+            {
+                // Setup Control
+                // jaguarControl.realJaguar.SetDcMotorVelocityControlPID(3, K_P, K_D, K_I);
+                // jaguarControl.realJaguar.SetDcMotorVelocityControlPID(4, K_P, K_D, K_I);
+
                 jaguarControl.realJaguar.DcMotorVelocityNonTimeCtrAll(0, 0, 0, motorSignalL, (short)(-motorSignalR), 0);
+            }
         }
         #endregion
 
@@ -522,8 +482,8 @@ namespace DrRobot.JaguarControl
             {
                 TimeSpan ts = DateTime.Now - startTime;
                 time = ts.TotalSeconds;
-                 String newData = time.ToString() + " " + x.ToString() + " " + y.ToString() + " " + t.ToString() ;
-
+                String newData = time.ToString() + " " + x.ToString() + " " + y.ToString() + " " + t.ToString();
+                // +" " + rho.ToString() + " " + desiredRotRateL.ToString() + " " + desiredRotRateR.ToString() + " " + alpha.ToString() + " " + beta.ToString();
                 logFile.WriteLine(newData);
             }
         }
@@ -560,54 +520,51 @@ namespace DrRobot.JaguarControl
         // robot state. It does not check for collisions
         private void FlyToSetPoint()
         {
-
-            // ****************** Additional Student Code: Start ************
-
-            // Put code here to calculate desiredRotRateR and 
-            // desoredRotRateL. Make sure the robot does not exceed 
+            // Put code here to calculate motorSignalR and 
+            // motorSignalL. Make sure the robot does not exceed 
             // maxVelocity!!!!!!!!!!!!
 
-                double angVelL, angVelR;
+            double angVelL, angVelR;
 
-                delta_x = desiredX - x_est;
-                delta_y = desiredY - y_est;
+            delta_x = desiredX - x_est;
+            delta_y = desiredY - y_est;
 
-                rho = Math.Sqrt((Math.Pow(delta_x, 2) + Math.Pow(delta_y, 2)));
-                alpha = -t + Math.Atan2(delta_y, delta_x);
+            rho = Math.Sqrt((Math.Pow(delta_x, 2) + Math.Pow(delta_y, 2)));
+            alpha = -t + Math.Atan2(delta_y, delta_x);
 
-                desiredV = Krho * rho;
+            desiredV = Krho * rho;
 
+            // constrain calculated alpha:
+            alpha = normalizeAngle(alpha);
+
+            // If we need to turn more than 180 degrees, turn backwards!
+            if (Math.Abs(alpha) > (Math.PI / 2))
+            {
+                // recalculate alpha and desiredV to drive backwards:
+                alpha = -t + Math.Atan2(-delta_y, -delta_x);
                 // constrain calculated alpha:
                 alpha = normalizeAngle(alpha);
 
-                // If we need to turn more than 180 degrees, turn backwards!
-                if (Math.Abs(alpha) > (Math.PI / 2))
-                {
-                    // recalculate alpha and desiredV to drive backwards:
-                    alpha = -t + Math.Atan2(-delta_y, -delta_x);
-                    // constrain calculated alpha:
-                    alpha = normalizeAngle(alpha);
+                desiredV = (-Krho) * rho;
+            }
 
-                    desiredV = (-Krho) * rho;
-                }
+            // state estimation eqn 1:
+            beta = -t - alpha + desiredT;
 
-                // state estimation eqn 1:
-                beta = -t - alpha + desiredT;
+            // constraint calculated beta:
+            // alpha = normalizeAngle(alpha);
+            beta = normalizeAngle(beta);
 
-                // constraint calculated beta:
-                // alpha = normalizeAngle(alpha);
-                beta = normalizeAngle(beta);
+            //if (rho < closeThresh)
+            //    beta = 0;
 
-                //if (rho < closeThresh)
-                //    beta = 0;
+            // state estimation eqn 2:
+            desiredW = (Kalpha * alpha) + (Kbeta * beta);
 
-                // state estimation eqn 2:
-                desiredW = (Kalpha * alpha) + (Kbeta * beta);
-
-                angVelR = (desiredV / (2 * robotRadius)) + (desiredW / 2);
-                angVelL = (-desiredV / (2 * robotRadius)) + (desiredW / 2);
-                desiredRotRateR = (short)((((angVelR * 2 * robotRadius) / wheelRadius) / (2 * Math.PI)) * 190);    // [pulses/second]
-                desiredRotRateL = (short)((((angVelL * 2 * robotRadius) / wheelRadius) / (2 * Math.PI)) * 190);
+            angVelR = (desiredV / (2 * robotRadius)) + (desiredW / 2);
+            angVelL = (-desiredV / (2 * robotRadius)) + (desiredW / 2);
+            desiredRotRateR = (short)(   ((  (angVelR * 2 * robotRadius) / wheelRadius) / (2 * Math.PI) ) * 190);    // [pulses/second]
+            desiredRotRateL = (short)(   (( (angVelL * 2 * robotRadius) / wheelRadius) / (2 * Math.PI) ) * 190);
 
             // Kill motor signals if robot is "close enough" to target location:
             //if ((rho < closeThresh) && (alpha < thetaThresh))
@@ -616,7 +573,6 @@ namespace DrRobot.JaguarControl
             //    desiredRotRateL = 0;
             //}
 
-            // ****************** Additional Student Code: End   ************
         }
 
 
@@ -638,6 +594,7 @@ namespace DrRobot.JaguarControl
 
 
         #region Localization Functions
+
         /************************ LOCALIZATION ***********************/
 
         // This function will grab the most recent encoder measurements
@@ -647,6 +604,7 @@ namespace DrRobot.JaguarControl
         // distanceTravelled and angleTravelled respectively.
         public void MotionPrediction()
         {
+
             // Put code here to calculated distanceTravelled and angleTravelled.
             // You can set and use variables like diffEncoder1, currentEncoderPulse1,
             // wheelDistanceL, wheelRadius, encoderResolution etc. These are defined
@@ -675,19 +633,14 @@ namespace DrRobot.JaguarControl
             // Calculate angle traveled (in one DeltaT):
             angleTravelled = (wheelDistanceR - wheelDistanceL) / (2 * robotRadius);
             distanceTravelled = (wheelDistanceL + wheelDistanceR) / 2.0;
+
         }
 
         // This function will Localize the robot, i.e. set the robot position
         // defined by x,y,t using the last position with angleTravelled and
         // distance travelled.
-        public void LocalizeRealWithOdometry()
+        public void LocalizeRealWithOdometry()//CWiRobotSDK* m_MOTSDK_rob)
         {
-            // ****************** Additional Student Code: Start ************
-
-            // Put code here to calculate x,y,t based on odemetry 
-            // (i.e. using last x, y, t as well as angleTravelled and distanceTravelled).
-            // Make sure t stays between pi and -pi
-
             // Put code here to calculate x,y,t based on odemetry 
             // (i.e. using last x, y, t as well as angleTravelled and distanceTravelled).
             // Make sure t stays between pi and -pi
@@ -699,16 +652,23 @@ namespace DrRobot.JaguarControl
 
             t += angleTravelled;    // add angular displacement.
             // t %= (2 * Math.PI);     // remove multiple circles around unit circle.
-
+            
             // fit to range of -PI to +PI:
             t = normalizeAngle(t);
+            /*
+            if (t > Math.PI)
+            { t -= (2 * Math.PI); }
 
-            // ****************** Additional Student Code: End   ************
+            if (t < -Math.PI)
+            { t += (2 * Math.PI); }
+            */
+
         }
+
         // This function will Localize the robot, i.e. set the robot position
         // defined by x,y,t using the last position with angleTravelled and
         // distance travelled.
-        public void LocalizeRealWithIMU()
+        public void LocalizeRealWithIMU()//CWiRobotSDK* m_MOTSDK_rob)
         {
             // ****************** Additional Student Code: Start ************
 
@@ -725,204 +685,30 @@ namespace DrRobot.JaguarControl
         {
             // To start, just set the estimated to be the actual for simulations
             // This will not be necessary when running the PF lab
-            
+            x_est = x;
+            y_est = y;
+            t_est = t;
 
             // ****************** Additional Student Code: Start ************
 
-            double netParticleWeight = 0;
-            double littleRandomNoise = 0.05;
-            double[] particleMaxGaussian =  new double[numParticles];
-            double currentMax = 0;
-
             // Put code here to calculate x_est, y_est, t_est using a PF
-            // x_est = 0; y_est = 0; t_est = 0;
-            x = x_est;  // ask Prof Clark
-            y = y_est;
-            t = t_est;
 
-            for (int i = 0; i < numParticles; i++)
-            {
-                // propagate each pose forward by however much we think we moved:
-                propagatedParticles[i].x = particles[i].x + delta_x;
-                propagatedParticles[i].y = particles[i].y + delta_y;
-                propagatedParticles[i].t = particles[i].t + deltaT;
 
-                // throw in a little noise:
-                propagatedParticles[i].x += (delta_x * littleRandomNoise * random.NextDouble());
-                propagatedParticles[i].y += (delta_y * littleRandomNoise * random.NextDouble());
-                propagatedParticles[i].t += (deltaT * littleRandomNoise *random.NextDouble());
-                
-                // normalize that t (just in case):
-                propagatedParticles[i].t = normalizeAngle(propagatedParticles[i].t);
 
-                CalculateWeight(i);
-                netParticleWeight += propagatedParticles[i].w;
-            }
-
-            for (int i = 0; i < numParticles; i++)
-            {
-                propagatedParticles[i].w /= netParticleWeight;    // normalize particle weight
-                currentMax += propagatedParticles[i].w;
-                particleMaxGaussian[i] = currentMax;
-            }
-
-            // Accounts for rounding error
-            particleMaxGaussian[numParticles - 1] = 1;
-
-            // Weighted random sampling
-            for (int j = 0; j < numParticles; j++)
-            {
-                int index = 0;
-                double uniformDist = random.NextDouble();
-
-            // Find which range that Gauss falls within the propagated particle Gaussian:
-                while (particleMaxGaussian[index] < uniformDist)
-                {   index++;}
-
-            // assign new particle:
-                particles[j].x = propagatedParticles[index].x;
-                particles[j].y = propagatedParticles[index].y;
-                particles[j].t = propagatedParticles[index].t;
-            }
-
-            // Part 8:
-            // Now, compute the estimated pose as the average of all poses:
-            x_est = 0; y_est = 0; t_est = 0;
-
-            for (int k = 0; k < numParticles; k++)
-            {
-                x_est += particles[k].x;
-                y_est += particles[k].y;
-                t_est += particles[k].t;
-            }
-
-            x_est /= numParticles; y_est /= numParticles; t_est /= numParticles;
 
             // ****************** Additional Student Code: End   ************
 
         }
 
-        // Particle filters work by setting the weight associated with each
-        // particle, according to the difference between the real robot 
-        // range measurements and the predicted measurements associated 
-        // with the particle.
-        // This function should calculate the weight associated with particle p.
 
-        void CalculateWeight(int p)
-        {
-            double laserWeight, mu;
-            propagatedParticles[p].w = 1;
-
-            for (int i = 0; i < LaserData.Length; i=i+6)       // LaserData.Length = 227 [long]
-            {
-                mu = map.GetClosestWallDistance(particles[p].x, particles[p].y, particles[p].t);
-                laserWeight = Math.Exp(-Math.Pow(((double) (LaserData[i] / 1000.0) - mu), 2) / (2 * sigma * sigma));
-                propagatedParticles[i].w *= laserWeight;
-            }
-        }
-
-
-
-        // This function is used to initialize the particle states 
-        // for particle filtering. It should pick a random location in the 
-        // environment for each particle by calling SetRandomPos
-
-        void InitializeParticles() {
-	        // Set particles in random locations and orientations within environment
-	        for (int i=0; i< numParticles; i++){
-
-		        // Either set the particles at known start position [0 0 0],  
-		        // or set particles at random locations.
-
-                if (jaguarControl.startMode == jaguarControl.UNKNOWN)
-    		        SetRandomPos(i);
-                else if (jaguarControl.startMode == jaguarControl.KNOWN)
-		            SetStartPos(i);
-	        }
-            
-        }
-
-
-
-        // For particle p, this function will select a valid position. It should
-        // select the position randomly, with equal likelihood of being anywhere 
-        // in the environement. Should work for rectangular environments to make 
-        // things easier.
-
-        void SetRandomPos(int p){
-
-	        // ****************** Additional Student Code: Start ************
-
-	        // Put code here to calculated the position, orientation of 
-            // particles[p]. Feel free to use the random.NextDouble() function. 
-	        // It might be helpful to use boundaries defined in the
-	        // Map.cs file (e.g. map.minX)
-            do { particles[p].x = (RandomGaussian() * map.maxX); }
-            while ( particles[p].x < map.minX );
-            
-            do { particles[p].y = (RandomGaussian() * map.maxY); }
-            while (particles[p].y < map.minY);
-            
-            particles[p].t = (RandomGaussian() * (2*Math.PI));
-            particles[p].t -= Math.PI; // normalize to a range from -PI to PI
-
-            // ****************** Additional Student Code: End   ************
-        }
-
-
-
-
-        // For particle p, this function will select a start predefined position. 
-        void SetStartPos(int p){
-	        particles[p].x = initialX;
-	        particles[p].y = initialY;
-	        particles[p].t = initialT;
-        }
-
-
-
-        // Random number generator with gaussian distribution
-        // Often random gaussian numbers are used in particle filters. This
-        // function might help.
-
-        double RandomGaussian()
-        {
-	        double U1, U2, V1=0, V2;
-	        double S = 2.0;
-	        while(S >= 1.0) 
-	        {
-		        U1 = random.NextDouble();
-                U2 = random.NextDouble();
-		        V1 = 2.0*U1-1.0;
-		        V2 = 2.0*U2-1.0;
-		        S = Math.Pow(V1,2) + Math.Pow(V2,2);
-	        }
-	        double gauss = V1*Math.Sqrt((-2.0*Math.Log(S))/S);
-	        return gauss;
-        }
-
-
-
-        // Get the sign of a number
-        double Sgn(double a)
-        {
-	        if (a>0)
-                return 1.0;
-	        else if (a<0)
-                return -1.0;
-	        else
-                return 0.0;
-        }
-
-
-/**********************************************************************
-* Additional Functions:
-* *******************************************************************/
-/*
-* function: normalizeAngle(double angleInput)
-* returns: a value constrained from -PI to PI
-*/
-        public static double normalizeAngle(double angleInput)
+        /**********************************************************************
+         * Additional Functions:
+         * *******************************************************************/
+        /*
+         * function: normalizeAngle(double angleInput)
+         * returns: a value constrained from -PI to PI
+         */
+        public double normalizeAngle(double angleInput)
         {
             double normalizedAngle = angleInput;
 

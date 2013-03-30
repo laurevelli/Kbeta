@@ -71,10 +71,10 @@ namespace DrRobot.JaguarControl
             mapSegmentCorners[6, 1, 0] = 3.55 / 2 + 3.05;
             mapSegmentCorners[6, 1, 1] = -2.74;
 
-            mapSegmentCorners[7, 0, 0] = 5.03 / 2;
-            mapSegmentCorners[7, 0, 1] = -2.74 - 2.31;
-            mapSegmentCorners[7, 1, 0] = -5.03/2;
-            mapSegmentCorners[7, 1, 1] = -2.74 - 2.31;
+            mapSegmentCorners[7, 0, 0] = 5.03 / 2;      // x1
+            mapSegmentCorners[7, 0, 1] = -2.74 - 2.31;  // y1
+            mapSegmentCorners[7, 1, 0] = -5.03/2;       // x2
+            mapSegmentCorners[7, 1, 1] = -2.74 - 2.31;  // y2
             // ****************** Additional Student Code: End   ************
 
 
@@ -104,18 +104,18 @@ namespace DrRobot.JaguarControl
         // SENSOR ORIENTATION (t)
         double GetWallDistance(double x, double y, double t, int segment){
 
-            // Set wall vars
-            double X1 = mapSegmentCorners[segment, 0, 0];
-            double Y1 = mapSegmentCorners[segment, 0, 1];
-            double X2 = mapSegmentCorners[segment, 1, 0];
-            double Y2 = mapSegmentCorners[segment, 1, 1];
-            double dist = 9999;
+	        // Set wall vars
+	        double X1 = mapSegmentCorners[segment,0,0];
+	        double Y1 = mapSegmentCorners[segment,0,1];
+	        double X2 = mapSegmentCorners[segment,1,0];
+	        double Y2 = mapSegmentCorners[segment,1,1];
+	        double dist = 9999;
 
-            //Range t
-            if (t > Math.PI) t -= 2 * Math.PI; else if (t < -Math.PI) t += 2 * Math.PI;
+	        //Range t
+	        if (t>Math.PI) t -= 2*Math.PI; else if (t<-Math.PI) t += 2*Math.PI;
 
-            // ****************** Additional Student Code: Start ************
-            
+
+	        // ****************** Additional Student Code: Start ************
             // create a line that models the robot's pose:
             double slopeRobot = Math.Tan(t);
             double yInterceptRobot = y - (slopeRobot * x);
@@ -123,24 +123,11 @@ namespace DrRobot.JaguarControl
             // First check if both slopes are equal:
             if (slopeRobot == slopes[segment])      // this might not work... /* FIXME */
                 return dist;    // a really big distance
+            
+            //double 
 
-            // Otherwise: do the math
-            double x_intersection = (yInterceptRobot - Y1 + (slopes[segment] * X1)) / (slopes[segment] - slopeRobot);
-            double y_intersection = (slopeRobot * x_intersection) + yInterceptRobot;
 
-            double measuredAngle = Math.Atan2((y_intersection - y), (x_intersection - x));
-            measuredAngle = Navigation.normalizeAngle(measuredAngle);
-
-            // check if robot angle t is close to measured angle to wall:  (otherwise, wall is unreachable)
-            if ( ( t < (measuredAngle - (0.1*measuredAngle))) || (t > (measuredAngle + (0.1*measuredAngle)) ) )
-            {
-                dist = 9999;    // return an unreachable huge value.
-            }
-            else
-            {
-                // Implement good ol' Pythagorus!
-                dist = Math.Pow((Math.Pow((y_intersection - y), 2) + Math.Pow((x_intersection - x), 2)), 0.5);
-            }
+	        
 
 	        // ****************** Additional Student Code: End   ************
 
@@ -155,15 +142,11 @@ namespace DrRobot.JaguarControl
         public double GetClosestWallDistance(double x, double y, double t){
 
 	        double minDist = 6.000;
-            double measurement;
 
 	        // ****************** Additional Student Code: Start ************
-            for (int i = 0; i < numMapSegments; i++)
-            {
-                measurement = GetWallDistance(x, y, t, i);
-                if (measurement < minDist)
-                    minDist = measurement;
-            }
+
+
+
 	        // ****************** Additional Student Code: End   ************
 
 	        return minDist;
@@ -192,7 +175,8 @@ namespace DrRobot.JaguarControl
         double GetWallDistance(double x, double y, int segment, double tol, double n2x, double n2y){
 
 
-	        return 0;
+//	        return dist;
+            return 0;
         }
 
 
