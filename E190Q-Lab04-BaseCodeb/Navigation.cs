@@ -213,7 +213,7 @@ namespace DrRobot.JaguarControl
         public void runControlLoop()
         {
             // Wait
-            Thread.Sleep(500);
+            // Thread.Sleep(500);
 
             // Don't run until we have gotten our first encoder measurements to difference with
             GetFirstEncoderMeasurements();
@@ -779,7 +779,6 @@ namespace DrRobot.JaguarControl
             double pWheelDistanceL, pWheelDistanceR;
             double pDistanceTravelled, pAngleTravelled;
            
-
             for (int i = 0; i < numParticles; i++)
             {
 // add some noise to most recent encoder values:
@@ -812,7 +811,6 @@ namespace DrRobot.JaguarControl
                 pAngleTravelled = (pWheelDistanceR - pWheelDistanceL) / (2 * robotRadius);
                 pDistanceTravelled = (pWheelDistanceL + pWheelDistanceR) / 2.0;
 
-
                 // end addition
 
 // update that particle's x,y,t:
@@ -838,6 +836,9 @@ namespace DrRobot.JaguarControl
 
             // Accounts for rounding error
             particleMaxGaussian[numParticles - 1] = 1;
+
+            //if (diffEncoderPulseL > 0)
+            //{ Thread.Sleep(10); }
 
             // Weighted random sampling
             for (int j = 0; j < numParticles; j++)
@@ -883,7 +884,7 @@ namespace DrRobot.JaguarControl
             for (int i = 0; i < LaserData.Length; i=i+6)       // LaserData.Length = 227 [long]
             {
                 mu = map.GetClosestWallDistance(particles[p].x, particles[p].y, particles[p].t);
-                laserWeight = Math.Exp(-Math.Pow(((double) (LaserData[i] / 1000.0) - mu), 2) / (2 * sigma * sigma));
+                laserWeight = Math.Exp(-Math.Pow((((double) LaserData[i] / 1000.0) - mu), 2) / (2 * sigma * sigma));
                 propagatedParticles[i].w *= laserWeight;
             }
         }
@@ -924,13 +925,11 @@ namespace DrRobot.JaguarControl
             // particles[p]. Feel free to use the random.NextDouble() function. 
 	        // It might be helpful to use boundaries defined in the
 	        // Map.cs file (e.g. map.minX)
-            do { particles[p].x = (RandomGaussian() * map.maxX); }
-            while ( particles[p].x < map.minX );
+            //do { particles[p].x = (RandomGaussian() * map.maxX); }
+            particles[p].x = map.minX + (random.NextDouble() * (map.maxX - map.minX));
+            particles[p].y = map.minY + (random.NextDouble() * (map.maxY - map.minY));
             
-            do { particles[p].y = (RandomGaussian() * map.maxY); }
-            while (particles[p].y < map.minY);
-            
-            particles[p].t = (RandomGaussian() * (2*Math.PI));
+            particles[p].t = (random.NextDouble() * (2*Math.PI));
             particles[p].t -= Math.PI; // normalize to a range from -PI to PI
 
             // ****************** Additional Student Code: End   ************
