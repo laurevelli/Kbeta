@@ -172,7 +172,7 @@ namespace DrRobot.JaguarControl
             loggingOn = false;
 
             // Set random start for particles
-            // jaguarControl.startMode = jaguarControl.KNOWN;   // Note: GUI checkbox initializes to KNOWN
+            jaguarControl.startMode = jaguarControl.UNKNOWN;   // Note: GUI checkbox initializes to KNOWN
             InitializeParticles();
 
             // Set default to no motionPlanRequired
@@ -658,7 +658,7 @@ namespace DrRobot.JaguarControl
 
             // Calculate Encoder Differences:
             diffEncoderPulseR = currentEncoderPulseR - lastEncoderPulseR;
-            diffEncoderPulseL = currentEncoderPulseL - lastEncoderPulseL;
+            diffEncoderPulseL = currentEncoderPulseL - lastEncoderPulseL;     
 
             // Check for Overflow and take the "inverted" difference if overflow occurred.
 
@@ -681,9 +681,43 @@ namespace DrRobot.JaguarControl
             distanceTravelled = (wheelDistanceL + wheelDistanceR) / 2.0;
         }
 
+
+/*
+ * Motion prediction for each particle.
+ * Warning: globals distanceTravelled, angleTravelled are updated.
+ */
+        public void particleMotionPrediction(double inputCurrNoisyEncoderL, double inputCurrNoisyEncoderR)
+        {
+
+            // Calculate Encoder Differences:
+            diffEncoderPulseR = inputCurrNoisyEncoderR - lastEncoderPulseR;
+            diffEncoderPulseL = inputCurrNoisyEncoderL - lastEncoderPulseL;
+
+            // Check for Overflow and take the "inverted" difference if overflow occurred.
+
+            if (diffEncoderPulseR < (-1 * maxTickSpeed))
+                diffEncoderPulseR = inputCurrNoisyEncoderR + (encoderMax - lastEncoderPulseR);
+            if (diffEncoderPulseR > maxTickSpeed)
+                diffEncoderPulseR = -1 * (lastEncoderPulseR + (encoderMax - inputCurrNoisyEncoderR));
+
+            if (diffEncoderPulseL < (-1 * maxTickSpeed))
+                diffEncoderPulseL = inputCurrNoisyEncoderL + (encoderMax - lastEncoderPulseL);
+            if (diffEncoderPulseL > maxTickSpeed)
+                diffEncoderPulseL = -1 * (lastEncoderPulseL + (encoderMax - inputCurrNoisyEncoderL));
+
+            // Calculate Linear wheel Distance travelled (in one DeltaT): [Lecture 3, Slide 16]
+            wheelDistanceL = diffEncoderPulseL / pulsesPerRotation * 2 * Math.PI * wheelRadius;
+            wheelDistanceR = -diffEncoderPulseR / pulsesPerRotation * 2 * Math.PI * wheelRadius;
+
+            // Calculate angle traveled (in one DeltaT):
+            angleTravelled = (wheelDistanceR - wheelDistanceL) / (2 * robotRadius);
+            distanceTravelled = (wheelDistanceL + wheelDistanceR) / 2.0;
+        }
+
         // This function will Localize the robot, i.e. set the robot position
         // defined by x,y,t using the last position with angleTravelled and
         // distance travelled.
+
         public void LocalizeRealWithOdometry()
         {
             // ****************** Additional Student Code: Start ************
@@ -709,6 +743,10 @@ namespace DrRobot.JaguarControl
 
             // ****************** Additional Student Code: End   ************
         }
+
+
+
+
         // This function will Localize the robot, i.e. set the robot position
         // defined by x,y,t using the last position with angleTravelled and
         // distance travelled.
@@ -729,36 +767,64 @@ namespace DrRobot.JaguarControl
         {
             // To start, just set the estimated to be the actual for simulations
             // This will not be necessary when running the PF lab
-            
-
-            // ****************** Additional Student Code: Start ************
 
             double netParticleWeight = 0;
-            double littleRandomNoise = 0.05;
+            // double littleRandomNoise = .1;
             double[] particleMaxGaussian =  new double[numParticles];
             double currentMax = 0;
+            double currentEncoderPulseL_noise, currentEncoderPulseR_noise;
 
-            // Put code here to calculate x_est, y_est, t_est using a PF
-            // x_est = 0; y_est = 0; t_est = 0;
-            x = x_est;  // ask Prof Clark
-            y = y_est;
-            t = t_est;
+            double pDiffEncoderPulseR = 0;
+            double pDiffEncoderPulseL = 0;
+            double pWheelDistanceL, pWheelDistanceR;
+            double pDistanceTravelled, pAngleTravelled;
+           
 
             for (int i = 0; i < numParticles; i++)
             {
-                // propagate each pose forward by however much we think we moved:
-                propagatedParticles[i].x = particles[i].x + delta_x;
-                propagatedParticles[i].y = particles[i].y + delta_y;
-                propagatedParticles[i].t = particles[i].t + deltaT;
+// add some noise to most recent encoder values:
+                currentEncoderPulseL_noise = currentEncoderPulseL + diffEncoderPulseL * (random.NextDouble()-0.5);
+                currentEncoderPulseR_noise = currentEncoderPulseR + diffEncoderPulseR * (random.NextDouble() - 0.5);
 
-                // throw in a little noise:
-                propagatedParticles[i].x += (delta_x * littleRandomNoise * random.NextDouble());
-                propagatedParticles[i].y += (delta_y * littleRandomNoise * random.NextDouble());
-                propagatedParticles[i].t += (deltaT * littleRandomNoise *random.NextDouble());
-                
-                // normalize that t (just in case):
+// perform motion prediction on that particle:
+
+                // Calculate Encoder Differences:
+                pDiffEncoderPulseR = currentEncoderPulseR_noise - lastEncoderPulseR;
+                pDiffEncoderPulseL = currentEncoderPulseL_noise - lastEncoderPulseL;
+
+                // Check for Overflow and take the "inverted" difference if overflow occurred.
+
+                if (pDiffEncoderPulseR < (-1 * maxTickSpeed))
+                    pDiffEncoderPulseR = currentEncoderPulseR_noise + (encoderMax - lastEncoderPulseR);
+                if (pDiffEncoderPulseR > maxTickSpeed)
+                    pDiffEncoderPulseR = -1 * (lastEncoderPulseR + (encoderMax - currentEncoderPulseR_noise));
+
+                if (pDiffEncoderPulseL < (-1 * maxTickSpeed))
+                    pDiffEncoderPulseL = currentEncoderPulseL_noise + (encoderMax - lastEncoderPulseL);
+                if (pDiffEncoderPulseL > maxTickSpeed)
+                    pDiffEncoderPulseL = -1 * (lastEncoderPulseL + (encoderMax - currentEncoderPulseL_noise));
+
+                // Calculate Linear wheel Distance travelled (in one DeltaT): [Lecture 3, Slide 16]
+                pWheelDistanceL = pDiffEncoderPulseL / pulsesPerRotation * 2 * Math.PI * wheelRadius;
+                pWheelDistanceR = -pDiffEncoderPulseR / pulsesPerRotation * 2 * Math.PI * wheelRadius;
+
+                // Calculate angle traveled (in one DeltaT):
+                pAngleTravelled = (pWheelDistanceR - pWheelDistanceL) / (2 * robotRadius);
+                pDistanceTravelled = (pWheelDistanceL + pWheelDistanceR) / 2.0;
+
+
+                // end addition
+
+// update that particle's x,y,t:
+                propagatedParticles[i].x += pDistanceTravelled * Math.Cos(t + (pAngleTravelled / 2));
+                propagatedParticles[i].y += pDistanceTravelled * Math.Sin(t + (pAngleTravelled / 2));
+
+                propagatedParticles[i].t += pAngleTravelled;    // add angular displacement.
+
+                // fit to range of -PI to +PI:
                 propagatedParticles[i].t = normalizeAngle(propagatedParticles[i].t);
 
+// Weight that particle:
                 CalculateWeight(i);
                 netParticleWeight += propagatedParticles[i].w;
             }
@@ -801,9 +867,6 @@ namespace DrRobot.JaguarControl
             }
 
             x_est /= numParticles; y_est /= numParticles; t_est /= numParticles;
-
-            // ****************** Additional Student Code: End   ************
-
         }
 
         // Particle filters work by setting the weight associated with each
