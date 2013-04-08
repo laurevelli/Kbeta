@@ -100,7 +100,7 @@ namespace DrRobot.JaguarControl
         public double[] laserAngles;
         private int laserCounter;
         private int laserStepSize = 3;
-        public double sigma = 0.02;  // estimated std for laser data (amped up)
+        public double sigma = 0.002;  // estimated std for laser data (amped up)
 
         public class Particle
         {
@@ -247,7 +247,7 @@ namespace DrRobot.JaguarControl
 
                 // Estimate the global state of the robot -x_est, y_est, t_est (lab 4)
                 // only if the robot has moved!
-                if (diffEncoderPulseL != 0 && diffEncoderPulseR != 0)
+                if (diffEncoderPulseL != 0 || diffEncoderPulseR != 0)
                 {
                     LocalizeEstWithParticleFilter();
                 }
@@ -791,8 +791,8 @@ namespace DrRobot.JaguarControl
             for (int i = 0; i < numParticles; i++)
             {
 // add some noise to most recent encoder values:
-                currentEncoderPulseL_noise = currentEncoderPulseL + diffEncoderPulseL * 2*(random.NextDouble()-0.5);
-                currentEncoderPulseR_noise = currentEncoderPulseR + diffEncoderPulseR * 2*(random.NextDouble() - 0.5);
+                currentEncoderPulseL_noise = currentEncoderPulseL + diffEncoderPulseL * (random.NextDouble()-0.5);
+                currentEncoderPulseR_noise = currentEncoderPulseR + diffEncoderPulseR * (random.NextDouble() - 0.5);
 
 // perform motion prediction on that particle:
 
@@ -848,6 +848,7 @@ namespace DrRobot.JaguarControl
             //if (diffEncoderPulseL > 0)
             //{ Thread.Sleep(10); }
 
+            
             // Weighted random sampling
             for (int j = 0; j < numParticles; j++)
             {
@@ -863,12 +864,10 @@ namespace DrRobot.JaguarControl
                 particles[j].y = propagatedParticles[index].y;
                 particles[j].t = propagatedParticles[index].t;
             }
-            /*
-            for (int j = 995; j < 1000; j++)
-            {
-                SetRandomPos(j);
-            }
-            */
+            
+
+
+
             // Part 8:
             // Now, compute the estimated pose as the average of all poses:
             x_est = 0; y_est = 0; t_est = 0;

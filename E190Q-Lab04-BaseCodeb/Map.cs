@@ -154,7 +154,7 @@ namespace DrRobot.JaguarControl
 
         public double GetClosestWallDistance(double x, double y, double t){
 
-	        double minDist = 9999.0;
+	        double minDist = 6;
             double measurement;
 
 	        // ****************** Additional Student Code: Start ************
