@@ -100,7 +100,7 @@ namespace DrRobot.JaguarControl
         public double[] laserAngles;
         private int laserCounter;
         private int laserStepSize = 3;
-        public double sigma = 0.002;  // estimated std for laser data (amped up)
+        public double sigma = 0.02;  // estimated std for laser data (amped up)
 
         public class Particle
         {
@@ -246,9 +246,11 @@ namespace DrRobot.JaguarControl
                 
 
                 // Estimate the global state of the robot -x_est, y_est, t_est (lab 4)
-                if (diffEncoderPulseL!=0 && diffEncoderPulseR !=0)
-                LocalizeEstWithParticleFilter();
-
+                // only if the robot has moved!
+                if (diffEncoderPulseL != 0 && diffEncoderPulseR != 0)
+                {
+                    LocalizeEstWithParticleFilter();
+                }
 
                 // If using the point tracker, call the function
                 if (jaguarControl.controlMode == jaguarControl.AUTONOMOUS)
@@ -388,7 +390,8 @@ namespace DrRobot.JaguarControl
                 laserCounter = laserCounter + deltaT;
                 if (laserCounter >= 2000)
                 {
-                    for (int i = 0; i < LaserData.Length; i=i+laserStepSize)
+                    //for (int i = 0; i < LaserData.Length; i=i+laserStepSize) // wat?
+                    for (int i = 0; i < LaserData.Length; i = i + 1)
                     {
                         LaserData[i] = (long)(1000 * map.GetClosestWallDistance(x, y, t -1.57 + laserAngles[i]));
                     }
@@ -691,6 +694,7 @@ namespace DrRobot.JaguarControl
  * Motion prediction for each particle.
  * Warning: globals distanceTravelled, angleTravelled are updated.
  */
+        /*
         public void particleMotionPrediction(double inputCurrNoisyEncoderL, double inputCurrNoisyEncoderR)
         {
 
@@ -718,7 +722,7 @@ namespace DrRobot.JaguarControl
             angleTravelled = (wheelDistanceR - wheelDistanceL) / (2 * robotRadius);
             distanceTravelled = (wheelDistanceL + wheelDistanceR) / 2.0;
         }
-
+        */
         // This function will Localize the robot, i.e. set the robot position
         // defined by x,y,t using the last position with angleTravelled and
         // distance travelled.
@@ -787,8 +791,8 @@ namespace DrRobot.JaguarControl
             for (int i = 0; i < numParticles; i++)
             {
 // add some noise to most recent encoder values:
-                currentEncoderPulseL_noise = currentEncoderPulseL + diffEncoderPulseL * (random.NextDouble()-0.5);
-                currentEncoderPulseR_noise = currentEncoderPulseR + diffEncoderPulseR * (random.NextDouble() - 0.5);
+                currentEncoderPulseL_noise = currentEncoderPulseL + diffEncoderPulseL * 2*(random.NextDouble()-0.5);
+                currentEncoderPulseR_noise = currentEncoderPulseR + diffEncoderPulseR * 2*(random.NextDouble() - 0.5);
 
 // perform motion prediction on that particle:
 
@@ -854,17 +858,17 @@ namespace DrRobot.JaguarControl
                 while (particleMaxGaussian[index] < uniformDist)
                 {   index++;}
 
-            // assign new particle:
+            // l new particle:
                 particles[j].x = propagatedParticles[index].x;
                 particles[j].y = propagatedParticles[index].y;
                 particles[j].t = propagatedParticles[index].t;
             }
-
-            //for (int j = 950; j < 1000; j++)
-            //{
-            //    SetRandomPos(j);
-            //}
-
+            /*
+            for (int j = 995; j < 1000; j++)
+            {
+                SetRandomPos(j);
+            }
+            */
             // Part 8:
             // Now, compute the estimated pose as the average of all poses:
             x_est = 0; y_est = 0; t_est = 0;
@@ -889,13 +893,32 @@ namespace DrRobot.JaguarControl
         {
             double laserWeight, mu;
             propagatedParticles[p].w = 1;
+            double currentAngle = 0;
 
-            for (int i = 0; i < LaserData.Length; i=i+6)       // LaserData.Length = 227 [long]
+            for (int i = 0; i < LaserData.Length; i = i + 30)       // LaserData.Length = 227 [long]
             {
-                mu = map.GetClosestWallDistance(particles[p].x, particles[p].y, particles[p].t);
-                laserWeight = Math.Exp(-Math.Pow((((double) LaserData[i] / 1000.0) - mu), 2) / (2 * sigma * sigma));
-                propagatedParticles[i].w *= laserWeight;
+                // mu is a single laser ray extending out at the x,y location of the robot:
+                mu = map.GetClosestWallDistance(propagatedParticles[p].x, 
+                                                propagatedParticles[p].y, 
+                                                (propagatedParticles[p].t - 1.57 + laserAngles[i]));
+                
+                // because laserData[i] is calculated by map.GetClosestWallDistance(x, y, t -1.57 + laserAngles[i])
+
+                // weight that laser ray value with a normal distribution:
+                laserWeight = Math.Exp(-Math.Pow((((double)LaserData[i] / 1000.0) - mu), 2) / (2 * sigma * sigma));
+
+                // overall probability is the product of each independent laser probability:
+                propagatedParticles[p].w *= laserWeight;
             }
+            
+
+            /*
+            mu = map.GetClosestWallDistance(particles[p].x, particles[p].y, particles[p].t);
+            laserWeight = Math.Exp(-Math.Pow((((double)LaserData[113] / 1000.0) - mu), 2) / (2 * sigma * sigma));
+
+            // overall probability is the product of each laser probability
+            propagatedParticles[p].w *= laserWeight;
+            */
         }
 
 
@@ -955,9 +978,6 @@ namespace DrRobot.JaguarControl
 	        particles[p].x = initialX;
 	        particles[p].y = initialY;
 	        particles[p].t = initialT;
-//            propagatedParticles[p].x = particles[p].x;
-//            propagatedParticles[p].y = particles[p].y;
-//            propagatedParticles[p].t = particles[p].t;
         }
 
 
