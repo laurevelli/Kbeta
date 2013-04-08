@@ -11,8 +11,8 @@ namespace DrRobot.JaguarControl
     {
         #region Navigation Variables
         public long[] LaserData = new long[DrRobot.JaguarControl.JaguarCtrl.DISDATALEN];
-        public double initialX, initialY, initialT;
         public double x, y, t;
+        public double initialX, initialY, initialT;
         public double x_est, y_est, t_est;
         public double desiredX, desiredY, desiredT;
 
@@ -128,15 +128,7 @@ namespace DrRobot.JaguarControl
             particles = new Particle[numParticles];
             propagatedParticles = new Particle[numParticles];
 
-            // Create particles
-            for (int i = 0; i < numParticles; i++)
-            {
-                particles[i] = new Particle();
-                propagatedParticles[i] = new Particle();
-            }
-
             this.Initialize();
-
 
             // Start Control Thread
             controlThread = new Thread(new ThreadStart(runControlLoop));
@@ -147,15 +139,27 @@ namespace DrRobot.JaguarControl
         // This is called every time the reset button is pressed
         public void Initialize()
         {
-            // Initialize state estimates
-            x = 0;//initialX;
-            y = 0;//initialY;
-            t = 0;//initialT;
+
+            // Create particles
+            for (int i = 0; i < numParticles; i++)
+            {
+                particles[i] = new Particle();
+                propagatedParticles[i] = new Particle();
+            }
 
             // Initialize state estimates
-            x_est = 0;//initialX;
-            y_est = 0;//initialY;
-            t_est = 0;//initialT;
+            x = 1;//initialX;
+            y = 1;//initialY;
+            t = 1;//initialT;
+
+            // Initialize state estimates
+            x_est = 1;//initialX;
+            y_est = 1;//initialY;
+            t_est = 1;//initialT;
+
+            initialX = x;   // Start locations for particles (when initial state is KNOWN)
+            initialY = y;
+            initialT = t;
 
             // Set desired state
             desiredX = 0;// initialX;
@@ -172,7 +176,7 @@ namespace DrRobot.JaguarControl
             loggingOn = false;
 
             // Set random start for particles
-            jaguarControl.startMode = jaguarControl.UNKNOWN;   // Note: GUI checkbox initializes to KNOWN
+            // jaguarControl.startMode = jaguarControl.UNKNOWN;   // Note: GUI checkbox initializes to KNOWN
             InitializeParticles();
 
             // Set default to no motionPlanRequired
@@ -242,6 +246,7 @@ namespace DrRobot.JaguarControl
                 
 
                 // Estimate the global state of the robot -x_est, y_est, t_est (lab 4)
+                if (diffEncoderPulseL!=0 && diffEncoderPulseR !=0)
                 LocalizeEstWithParticleFilter();
 
 
@@ -814,10 +819,9 @@ namespace DrRobot.JaguarControl
                 // end addition
 
 // update that particle's x,y,t:
-                propagatedParticles[i].x += pDistanceTravelled * Math.Cos(t + (pAngleTravelled / 2));
-                propagatedParticles[i].y += pDistanceTravelled * Math.Sin(t + (pAngleTravelled / 2));
-
-                propagatedParticles[i].t += pAngleTravelled;    // add angular displacement.
+                propagatedParticles[i].x = particles[i].x + pDistanceTravelled * Math.Cos(particles[i].t + (pAngleTravelled / 2));
+                propagatedParticles[i].y = particles[i].y + pDistanceTravelled * Math.Sin(particles[i].t + (pAngleTravelled / 2));
+                propagatedParticles[i].t = particles[i].t + pAngleTravelled;    // add angular displacement.
 
                 // fit to range of -PI to +PI:
                 propagatedParticles[i].t = normalizeAngle(propagatedParticles[i].t);
@@ -855,6 +859,11 @@ namespace DrRobot.JaguarControl
                 particles[j].y = propagatedParticles[index].y;
                 particles[j].t = propagatedParticles[index].t;
             }
+
+            //for (int j = 950; j < 1000; j++)
+            //{
+            //    SetRandomPos(j);
+            //}
 
             // Part 8:
             // Now, compute the estimated pose as the average of all poses:
@@ -932,6 +941,9 @@ namespace DrRobot.JaguarControl
             particles[p].t = (random.NextDouble() * (2*Math.PI));
             particles[p].t -= Math.PI; // normalize to a range from -PI to PI
 
+//            propagatedParticles[p].x = particles[p].x;
+//            propagatedParticles[p].y = particles[p].y;
+//            propagatedParticles[p].t = particles[p].t;
             // ****************** Additional Student Code: End   ************
         }
 
@@ -943,6 +955,9 @@ namespace DrRobot.JaguarControl
 	        particles[p].x = initialX;
 	        particles[p].y = initialY;
 	        particles[p].t = initialT;
+//            propagatedParticles[p].x = particles[p].x;
+//            propagatedParticles[p].y = particles[p].y;
+//            propagatedParticles[p].t = particles[p].t;
         }
 
 

@@ -355,7 +355,10 @@ namespace DrRobot.JaguarControl
             //gEarth.Initialize(this);
 
             if (Simulating())
+            {
                 checkBoxHardware.Checked = false;
+                checkBoxKnownStart.Checked = false;
+            }
             else
                 checkBoxHardware.Checked = true;
         
