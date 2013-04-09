@@ -100,7 +100,7 @@ namespace DrRobot.JaguarControl
         public double[] laserAngles;
         private int laserCounter;
         private int laserStepSize = 3;
-        public double sigma = 0.002;  // estimated std for laser data (amped up)
+        public double sigma = 500;  // estimated std for laser data (amped up. Should really be like: 0.02)
 
         public class Particle
         {
@@ -509,7 +509,7 @@ namespace DrRobot.JaguarControl
         public void TurnLoggingOn()
         {
             //int fileCnt= 0;
-            String date = DateTime.Now.Year.ToString() + "-" + DateTime.Now.Month.ToString() + "-" + DateTime.Now.Day.ToString() + "-" + DateTime.Now.Minute.ToString();
+            String date = DateTime.Now.Month.ToString() + "_"+ DateTime.Now.Day.ToString() + "_" + DateTime.Now.Year.ToString();
             ToString();
             logFile = File.CreateText("JaguarData_" + date + ".txt");
             startTime = DateTime.Now;
@@ -534,8 +534,8 @@ namespace DrRobot.JaguarControl
             {
                 TimeSpan ts = DateTime.Now - startTime;
                 time = ts.TotalSeconds;
-                 String newData = time.ToString() + " " + x.ToString() + " " + y.ToString() + " " + t.ToString() ;
-
+                 String newData = x.ToString() + ", " + y.ToString() + ", " + t.ToString() +
+                    ", " + x.ToString() + ", " + y.ToString() + ", " + t.ToString() + ", "+ time.ToString();
                 logFile.WriteLine(newData);
             }
         }
@@ -690,39 +690,6 @@ namespace DrRobot.JaguarControl
         }
 
 
-/*
- * Motion prediction for each particle.
- * Warning: globals distanceTravelled, angleTravelled are updated.
- */
-        /*
-        public void particleMotionPrediction(double inputCurrNoisyEncoderL, double inputCurrNoisyEncoderR)
-        {
-
-            // Calculate Encoder Differences:
-            diffEncoderPulseR = inputCurrNoisyEncoderR - lastEncoderPulseR;
-            diffEncoderPulseL = inputCurrNoisyEncoderL - lastEncoderPulseL;
-
-            // Check for Overflow and take the "inverted" difference if overflow occurred.
-
-            if (diffEncoderPulseR < (-1 * maxTickSpeed))
-                diffEncoderPulseR = inputCurrNoisyEncoderR + (encoderMax - lastEncoderPulseR);
-            if (diffEncoderPulseR > maxTickSpeed)
-                diffEncoderPulseR = -1 * (lastEncoderPulseR + (encoderMax - inputCurrNoisyEncoderR));
-
-            if (diffEncoderPulseL < (-1 * maxTickSpeed))
-                diffEncoderPulseL = inputCurrNoisyEncoderL + (encoderMax - lastEncoderPulseL);
-            if (diffEncoderPulseL > maxTickSpeed)
-                diffEncoderPulseL = -1 * (lastEncoderPulseL + (encoderMax - inputCurrNoisyEncoderL));
-
-            // Calculate Linear wheel Distance travelled (in one DeltaT): [Lecture 3, Slide 16]
-            wheelDistanceL = diffEncoderPulseL / pulsesPerRotation * 2 * Math.PI * wheelRadius;
-            wheelDistanceR = -diffEncoderPulseR / pulsesPerRotation * 2 * Math.PI * wheelRadius;
-
-            // Calculate angle traveled (in one DeltaT):
-            angleTravelled = (wheelDistanceR - wheelDistanceL) / (2 * robotRadius);
-            distanceTravelled = (wheelDistanceL + wheelDistanceR) / 2.0;
-        }
-        */
         // This function will Localize the robot, i.e. set the robot position
         // defined by x,y,t using the last position with angleTravelled and
         // distance travelled.
@@ -740,12 +707,10 @@ namespace DrRobot.JaguarControl
             // Make sure t stays between pi and -pi
 
             // Update the actual
-
             x += distanceTravelled * Math.Cos(t + (angleTravelled / 2));
             y += distanceTravelled * Math.Sin(t + (angleTravelled / 2));
 
             t += angleTravelled;    // add angular displacement.
-            // t %= (2 * Math.PI);     // remove multiple circles around unit circle.
 
             // fit to range of -PI to +PI:
             t = normalizeAngle(t);
@@ -791,17 +756,18 @@ namespace DrRobot.JaguarControl
             for (int i = 0; i < numParticles; i++)
             {
 // add some noise to most recent encoder values:
-                currentEncoderPulseL_noise = currentEncoderPulseL + diffEncoderPulseL * (random.NextDouble()-0.5);
-                currentEncoderPulseR_noise = currentEncoderPulseR + diffEncoderPulseR * (random.NextDouble() - 0.5);
+                //currentEncoderPulseL_noise = currentEncoderPulseL + diffEncoderPulseL * (random.NextDouble() - 0.5);
+                //currentEncoderPulseR_noise = currentEncoderPulseR + diffEncoderPulseR * (random.NextDouble() - 0.5);
+                currentEncoderPulseL_noise = currentEncoderPulseL +  RandomGaussian() * K_wheelRandomness;
+                currentEncoderPulseR_noise = currentEncoderPulseR +  RandomGaussian() * K_wheelRandomness;
+
 
 // perform motion prediction on that particle:
-
                 // Calculate Encoder Differences:
                 pDiffEncoderPulseR = currentEncoderPulseR_noise - lastEncoderPulseR;
                 pDiffEncoderPulseL = currentEncoderPulseL_noise - lastEncoderPulseL;
 
                 // Check for Overflow and take the "inverted" difference if overflow occurred.
-
                 if (pDiffEncoderPulseR < (-1 * maxTickSpeed))
                     pDiffEncoderPulseR = currentEncoderPulseR_noise + (encoderMax - lastEncoderPulseR);
                 if (pDiffEncoderPulseR > maxTickSpeed)
@@ -815,6 +781,9 @@ namespace DrRobot.JaguarControl
                 // Calculate Linear wheel Distance travelled (in one DeltaT): [Lecture 3, Slide 16]
                 pWheelDistanceL = pDiffEncoderPulseL / pulsesPerRotation * 2 * Math.PI * wheelRadius;
                 pWheelDistanceR = -pDiffEncoderPulseR / pulsesPerRotation * 2 * Math.PI * wheelRadius;
+
+                pWheelDistanceL += pWheelDistanceL* RandomGaussian() * K_wheelRandomness;
+                pWheelDistanceR += pWheelDistanceR * RandomGaussian() * K_wheelRandomness;
 
                 // Calculate angle traveled (in one DeltaT):
                 pAngleTravelled = (pWheelDistanceR - pWheelDistanceL) / (2 * robotRadius);
@@ -845,10 +814,6 @@ namespace DrRobot.JaguarControl
             // Accounts for rounding error
             particleMaxGaussian[numParticles - 1] = 1;
 
-            //if (diffEncoderPulseL > 0)
-            //{ Thread.Sleep(10); }
-
-            
             // Weighted random sampling
             for (int j = 0; j < numParticles; j++)
             {
@@ -864,9 +829,6 @@ namespace DrRobot.JaguarControl
                 particles[j].y = propagatedParticles[index].y;
                 particles[j].t = propagatedParticles[index].t;
             }
-            
-
-
 
             // Part 8:
             // Now, compute the estimated pose as the average of all poses:
@@ -880,14 +842,17 @@ namespace DrRobot.JaguarControl
             }
 
             x_est /= numParticles; y_est /= numParticles; t_est /= numParticles;
+
+
         }
+
+
 
         // Particle filters work by setting the weight associated with each
         // particle, according to the difference between the real robot 
         // range measurements and the predicted measurements associated 
         // with the particle.
         // This function should calculate the weight associated with particle p.
-
         void CalculateWeight(int p)
         {
             double laserWeight, mu;
@@ -909,8 +874,6 @@ namespace DrRobot.JaguarControl
                 // overall probability is the product of each independent laser probability:
                 propagatedParticles[p].w *= laserWeight;
             }
-            
-
             /*
             mu = map.GetClosestWallDistance(particles[p].x, particles[p].y, particles[p].t);
             laserWeight = Math.Exp(-Math.Pow((((double)LaserData[113] / 1000.0) - mu), 2) / (2 * sigma * sigma));
@@ -925,7 +888,6 @@ namespace DrRobot.JaguarControl
         // This function is used to initialize the particle states 
         // for particle filtering. It should pick a random location in the 
         // environment for each particle by calling SetRandomPos
-
         void InitializeParticles() {
 	        // Set particles in random locations and orientations within environment
 	        for (int i=0; i< numParticles; i++){
@@ -938,7 +900,6 @@ namespace DrRobot.JaguarControl
                 else if (jaguarControl.startMode == jaguarControl.KNOWN)
 		            SetStartPos(i);
 	        }
-            
         }
 
 
@@ -947,7 +908,6 @@ namespace DrRobot.JaguarControl
         // select the position randomly, with equal likelihood of being anywhere 
         // in the environement. Should work for rectangular environments to make 
         // things easier.
-
         void SetRandomPos(int p){
 
 	        // ****************** Additional Student Code: Start ************
@@ -963,9 +923,9 @@ namespace DrRobot.JaguarControl
             particles[p].t = (random.NextDouble() * (2*Math.PI));
             particles[p].t -= Math.PI; // normalize to a range from -PI to PI
 
-//            propagatedParticles[p].x = particles[p].x;
-//            propagatedParticles[p].y = particles[p].y;
-//            propagatedParticles[p].t = particles[p].t;
+            propagatedParticles[p].x = particles[p].x;
+            propagatedParticles[p].y = particles[p].y;
+            propagatedParticles[p].t = particles[p].t;
             // ****************** Additional Student Code: End   ************
         }
 

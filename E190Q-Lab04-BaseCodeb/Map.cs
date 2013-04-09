@@ -111,30 +111,45 @@ namespace DrRobot.JaguarControl
             double Y2 = mapSegmentCorners[segment, 1, 1];
             double dist = 9999;
 
-            //Range t
-            if (t > Math.PI) t -= 2 * Math.PI; else if (t < -Math.PI) t += 2 * Math.PI;
+            t = Navigation.normalizeAngle(t);
 
             // ****************** Additional Student Code: Start ************
             
             // create a line that models the robot's pose:
             double slopeRobot = Math.Tan(t);
+            // calc y-intercept via point-slop formula where inputx = 0.
             double yInterceptRobot = y - (slopeRobot * x);
 
-            // First check if both slopes are equal:
-            if (slopeRobot == slopes[segment])      // this might not work... /* FIXME */
+            // First check if both slopes are equal.  If they are, we have 2 parallel lines.
+            if ((slopeRobot > (slopes[segment] - (0.05 * Math.Abs(slopes[segment])) ) ) &&
+                (slopeRobot < (slopes[segment] + (0.05 * Math.Abs(slopes[segment]))) ) )
                 return dist;    // a really big distance
 
             // Otherwise: do the math
             double x_intersection = (yInterceptRobot - Y1 + (slopes[segment] * X1)) / (slopes[segment] - slopeRobot);
             double y_intersection = (slopeRobot * x_intersection) + yInterceptRobot;
 
-            double measuredAngle = Math.Atan2((y_intersection - y), (x_intersection - x));
-            measuredAngle = Navigation.normalizeAngle(measuredAngle);
+            // ensure that intersection point is ON path segment:
+            // account for rounding error....
+            double x_intersect_round_up = x_intersection + (0.01 * Math.Abs(x_intersection));
+            double x_intersect_round_down = x_intersection - (0.01 * Math.Abs(x_intersection));
+            double y_intersect_round_up = y_intersection + (0.01 * Math.Abs(y_intersection));
+            double y_intersect_round_down = y_intersection - (0.01 * Math.Abs(y_intersection));
+            // check if range of particle falls between the wall's line segments:
+            if ((Math.Min(X1, X2) > x_intersect_round_up) || (Math.Max(X1,X2) < x_intersect_round_down))
+                return dist;
+             if ((Math.Min(Y1, Y2) > y_intersect_round_up) || (Math.Max(Y1,Y2) < y_intersect_round_down))
+                return dist;
 
             // check if robot angle t is close to measured angle to wall:  (otherwise, wall is unreachable)
-            if ( ( t < (measuredAngle - (0.1*measuredAngle))) || (t > (measuredAngle + (0.1*measuredAngle)) ) )
+            // aka: make sure that the robot is facing the wall, and we're not looking at the wall behind us!
+             double measuredAngle = Math.Atan2((y_intersection - y), (x_intersection - x));
+             measuredAngle = Navigation.normalizeAngle(measuredAngle);
+             double lowerBound = Navigation.normalizeAngle(measuredAngle - (0.1 * Math.Abs(measuredAngle)));
+             double upperBound = Navigation.normalizeAngle(measuredAngle + (0.1 * Math.Abs(measuredAngle)));
+             if ((t < lowerBound) || (t > upperBound))
             {
-                dist = 9999;    // return an unreachable huge value.
+                return dist;    // return an unreachable huge value.
             }
             else
             {
@@ -143,7 +158,6 @@ namespace DrRobot.JaguarControl
             }
 
 	        // ****************** Additional Student Code: End   ************
-
 	        return dist;
         }
 
