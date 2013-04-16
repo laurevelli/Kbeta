@@ -726,15 +726,18 @@ namespace DrRobot.JaguarControl
             // or until a max number of iterations is reached.
 
 
-            // Create and add the start Node
+            // Create and add the start Node (note: last 2 args are bogus values right now)
             Node startNode = new Node(x_est, y_est, 0, 0);
+            // add that node:
+            AddNode(startNode);
 
-            // Create the goal node
+            // Create the goal node (note: last 2 args are bogus values right now)
             Node goalNode = new Node(desiredX, desiredY, 0, 0);
+
 
             // Loop until path created
             bool pathFound = false;
-            int maxIterations = maxNumNodes;
+            int maxIterations = 5000;
             int iterations = 0;
             int randCellNumber;
             int randNodeNumber;
@@ -757,22 +760,24 @@ namespace DrRobot.JaguarControl
 
                 // pick a random node in the cell:
                 randNodeNumber = (int)(randGenerator.NextDouble() * numNodesInCell[occupiedCellsList[randCellNumber]]);
+
                 randExpansionNode = NodesInCells[occupiedCellsList[randCellNumber], randNodeNumber];
 
                 // Now, generate a random distance and orientation for this node:
                 expansionDist = random.NextDouble() * maxDist;
                 expansionAng = Navigation.normalizeAngle(random.NextDouble() * maxAngle);
                 
+                
                 // Find New position:
-                // Create new node at that position.
                 newX = randExpansionNode.x + expansionDist * Math.Cos(expansionAng);
                 newY = randExpansionNode.y + expansionDist * Math.Sin(expansionAng);
+               
 
                 Node expansionNode = new Node(newX, newY, numNodes, randExpansionNode.nodeIndex);
 
                 // Check if the possible node that we're expanding off of is collision-free:
                 // arg1: new node; arg2: parent of new node; arg3; tolerance is closeness to the wall
-                if (map.CollisionFound(expansionNode, randExpansionNode, robotRadius) == false)
+                if (map.CollisionFound(randExpansionNode, expansionNode, robotRadius) == false)
                 {
                     AddNode(expansionNode);
 
